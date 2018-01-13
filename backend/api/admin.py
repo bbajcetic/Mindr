@@ -1,3 +1,6 @@
 from django.contrib import admin
+from api.models import Child, Event, Parent
 
-# Register your models here.
+admin.site.register(Child)
+admin.site.register(Event)
+admin.site.register(Parent)
