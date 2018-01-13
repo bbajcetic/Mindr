@@ -33,4 +33,7 @@ class Event(models.Model):
                               on_delete=models.CASCADE,
                               null=True)
 
-    pass
+    # Emotion data - the below are used for testing right now, i.e.
+    # they're not final
+    is_significant = models.BooleanField()
+    happiness = models.IntegerField()
