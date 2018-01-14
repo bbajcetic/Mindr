@@ -37,7 +37,7 @@ class EmotionRecognition:
       loss = 'categorical_crossentropy')
     self.model = tflearn.DNN(
       self.network,
-      checkpoint_path = SAVE_DIRECTORY + '/emotion_recognition',
+      checkpoint_path = SAVE_DIRECTORY + 'Gudi_model_100_epochs_20000_faces',
       max_checkpoints = 1,
       tensorboard_verbose = 2
     )
@@ -78,9 +78,11 @@ class EmotionRecognition:
     print('[+] Model trained and saved at ' + SAVE_MODEL_FILENAME)
 
   def load_model(self):
-    if isfile(join(SAVE_DIRECTORY, SAVE_MODEL_FILENAME)):
+    if True:#sisfile(join(SAVE_DIRECTORY, SAVE_MODEL_FILENAME)):
       self.model.load(join(SAVE_DIRECTORY, SAVE_MODEL_FILENAME))
       print('[+] Model loaded from ' + SAVE_MODEL_FILENAME)
+    else:
+      print("bum file name")
 
 
 def show_usage():
@@ -100,5 +102,6 @@ if __name__ == "__main__":
     network.save_model()
   elif sys.argv[1] == 'poc':
     import poc
+
   else:
     show_usage()
