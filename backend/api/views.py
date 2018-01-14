@@ -1,11 +1,13 @@
 from django.contrib.auth.models import User
 from django.core import serializers
+from django.db.models import F
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from rest_framework.decorators import permission_classes
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import AllowAny
+import datetime
 from api.models import Camera, Child, Event
 from api.serializers import (
         UserSerializer,
@@ -160,7 +162,6 @@ def events(request, userid, childid):
     return HttpResponse(response, status=200)
 
 
-
 @require_http_methods(["GET", "DELETE"])
 def get_event(request, parentid, childid, eventid):
     """Sends back an event or deletes an event."""
@@ -173,3 +174,18 @@ def get_event(request, parentid, childid, eventid):
     # Delete the event
     Event.objects.filter(id=eventid).delete()
     return JsonResponse(status=204)
+
+
+@require_http_methods(["GET"])
+def get_significant_events(request, userid):
+    user = Users.objects.filter(id=userid).first()
+    significant_events = (
+        Event.objects.filter(
+                        child__user__id=userid).filter(
+                        significant=True).filter(
+                        time__gt=F('time') + timedelta(hours=-24).order_by(
+                        '-time'))
+        )
+
+    response = serializers.serialize("json", significant_events)
+    return HttpResponse(response, status=200)
