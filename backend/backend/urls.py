@@ -1,11 +1,13 @@
 from django.contrib import admin
 from django.urls import path
+from django.utils.six import text_type
 from django.conf.urls import url, include
 from django.views import generic
 from rest_framework import views, serializers, status
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.schemas import get_schema_view
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import (
     TokenViewBase,
     TokenRefreshView,
@@ -13,10 +15,7 @@ from rest_framework_simplejwt.views import (
 from rest_framework_simplejwt.serializers import (
     TokenObtainSerializer,
 )
-
 import api.views as api_views
-from rest_framework_simplejwt.tokens import RefreshToken
-from django.utils.six import text_type
 
 
 class CustomTokenObtainPairSerializer(TokenObtainSerializer):
@@ -57,7 +56,6 @@ urlpatterns = [
     url(r'^api/auth/token/refresh/$', TokenRefreshView.as_view()),
 
     # Users
-    url(r'^api/users/register/', api_views.users),
     url(r'^api/users/', api_views.users),
 
     # Cameras
