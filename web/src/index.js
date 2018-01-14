@@ -1,25 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createHistory from 'history/createBrowserHistory'
-import { ConnectedRouter } from 'react-router-redux'
-import { Provider } from 'react-redux'
-import './index.css';
-import 'bootstrap/dist/css/bootstrap.css';
-import App from './App';
-import configureStore from './store'
-import {Route, Switch} from 'react-router'
-import Login from './containers/Login';
-import PrivateRoute from './containers/PrivateRoute';
+import { Provider } from 'react-redux';
+import store from './store';
+import App from './containers/App';
+import './styles/bootstrap.css';
+import './styles/font-awesome.css';
+import './styles/index.css';
 
-const history = createHistory()
-const store = configureStore(history)
-ReactDOM.render((
+ReactDOM.render(
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <Switch>
-        <Route exact path="/login/" component={Login} />
-        <PrivateRoute path="/" component={App}/>
-      </Switch>
-    </ConnectedRouter>
+    <App />
   </Provider>
-), document.getElementById('root'));
+  , document.getElementById('root'),
+);
