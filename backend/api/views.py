@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.core import serializers
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from rest_framework.decorators import permission_classes
@@ -36,7 +36,7 @@ def users(request):
 
     # Return all users
     response = serializers.serialize("json", Parent.objects.all())
-    return JsonResponse(response, status=200)
+    return HttpResponse(response, status=200)
 
 
 @require_http_methods(["GET", "DELETE"])
@@ -44,9 +44,10 @@ def get_user(request, userid):
     """Sends back a user or deletes a user."""
     if request.method == "GET":
         # Send back a user
-        response = serializers.serialize("json",
-                                         [User.objects.filter(id=userid)])
-        return JsonResponse(response, status=200)
+        response = serializers.serialize(
+                                    "json",
+                                    [User.objects.filter(id=userid).first()])
+        return HttpResponse(response, status=200)
 
     # Delete the user
     User.objects.filter(id=userid).delete()
@@ -72,8 +73,8 @@ def cameras(request, userid):
 
     # Return all of a user's cameras
     response = serializers.serialize("json",
-                                [Camera.objects.filter(parent__id=parentid)])
-    return JsonResponse(response, status=200)
+                                Camera.objects.filter(parent__id=parentid))
+    return HttpResponse(response, status=200)
 
 
 @require_http_methods(["GET", "DELETE"])
@@ -82,8 +83,8 @@ def get_camera(request, userid, cameraid):
     if request.method == "GET":
         # Send back the camera
         response = serializers.serialize("json",
-                                         [Camera.objects.filter(id=cameraid)])
-        return JsonResponse(response, status=200)
+                                 [Camera.objects.filter(id=cameraid).first()])
+        return HttpResponse(response, status=200)
 
     # Delete the camera
     Camera.objects.filter(id=cameraid).delete()
@@ -110,7 +111,7 @@ def children(request, userid):
     # Return all of a user's children
     response = serializers.serialize("json",
                                 Child.objects.filter(user__id=userid))
-    return JsonResponse(response, status=200)
+    return HttpResponse(response, status=200)
 
 
 @require_http_methods(["GET", "DELETE"])
@@ -119,8 +120,8 @@ def get_child(request, parentid, childid):
     if request.method == "GET":
         # Send back the child
         response = serializers.serialize("json",
-                                         [Child.objects.filter(id=childid)])
-        return JsonResponse(response, status=200)
+                                    [Child.objects.filter(id=childid).first()])
+        return HttpResponse(response, status=200)
 
     # Delete the child
     Child.objects.filter(id=childid).delete()
@@ -152,7 +153,7 @@ def events(request, userid, childid):
     # Return all of a child's events
     response = serializers.serialize("json",
                                 Event.objects.filter(child__id=childid))
-    return JsonResponse(response, status=200)
+    return HttpResponse(response, status=200)
 
 
 
@@ -162,8 +163,8 @@ def get_event(request, parentid, childid, eventid):
     if request.method == "GET":
         # Send back the event
         response = serializers.serialize("json",
-                                         [Event.objects.filter(id=eventid)])
-        return JsonResponse(response, status=200)
+                                   [Event.objects.filter(id=eventid).first()])
+        return HttpResponse(response, status=200)
 
     # Delete the event
     Event.objects.filter(id=eventid).delete()
