@@ -47,7 +47,7 @@ class ClientHelper:
                                                 'emotion': emotion,
                                                 'significant': significant,
                                                 'time': time,
-                                                'frame': frame})
+                                                'frame': frame}))
         if r.status_code == 200:
             print("something may have happened, and it may have been a positive or negative experience")
 
