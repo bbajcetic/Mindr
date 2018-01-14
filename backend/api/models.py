@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from api.staticvars import KEY_LENGTH
 
 
@@ -58,3 +60,10 @@ class Event(models.Model):
     # they're not final
     is_significant = models.BooleanField()
     happiness = models.IntegerField()
+
+@receiver(post_save, sender=User)
+def update_user_parent(sender, instance, created, **kwargs):
+    """Updates a user's 'parent'."""
+    if created:
+        Parent.objects.create(user=instance)
+    instance.parent.save()
