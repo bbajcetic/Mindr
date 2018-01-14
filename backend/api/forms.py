@@ -1,9 +1,8 @@
-import json
 from django import forms
-from api.models import Camera, Parent
+from api.models import Camera
 
-class CameraRegisterForm(form.ModelForm):
+class CameraRegisterForm(forms.ModelForm):
     """A form to register a new camera."""
     class Meta:
         model = Camera
-        fields = ('name')
+        fields = ('name',)

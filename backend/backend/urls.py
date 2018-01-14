@@ -24,6 +24,7 @@ from rest_framework_simplejwt.views import (
 )
 from rest_framework import views, serializers, status
 from rest_framework.response import Response
+import api.views as api_views
 
 
 class MessageSerializer(serializers.Serializer):
@@ -47,6 +48,6 @@ urlpatterns = [
         'rest_framework.urls', namespace='rest_framework')),
     url(r'^api/auth/token/obtain/$', TokenObtainPairView.as_view()),
     url(r'^api/auth/token/refresh/$', TokenRefreshView.as_view()),
-    url(r'^api/echo/$', EchoView.as_view())
+    url(r'^api/echo/$', EchoView.as_view()),
     path('<int:parentid>/camera/register/', api_views.register_camera),
 ]
