@@ -2,8 +2,8 @@
 import cv2
 import sys
 import os
-from constants import *
-from emotion_recognition import EmotionRecognition
+from nwhacks2018.client.ernn.constants import *
+from nwhacks2018.client.ernn.emotion_recognition import EmotionRecognition
 import numpy as np
 
 def format_image(image):
@@ -58,6 +58,6 @@ for f in files:
    
   if result is not None:
     for index, emotion in enumerate(EMOTIONS):
-      print emotion, ': ', result[0][index]
+      print(emotion, ': ', result[0][index])
 
-  print "Emotion: of ", f, "-", EMOTIONS[np.argmax(result[0])]
+  print("Emotion: of ", f, "-", EMOTIONS[np.argmax(result[0])])

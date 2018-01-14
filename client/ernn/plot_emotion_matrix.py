@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
+""""# -*- coding: utf-8 -*-
 import cv2
 import sys
-from constants import *
-from emotion_recognition import EmotionRecognition
+from nwhacks2018.client.ernn.constants import *
+from nwhacks2018.client.ernn.emotion_recognition import EmotionRecognition
 from os.path import join
 import numpy as np
 import matplotlib.pyplot as plt
@@ -53,3 +53,4 @@ show_values(c)
 plt.xlabel('Predicted Emotion')
 plt.ylabel('Real Emotion')
 plt.show()
+"""
