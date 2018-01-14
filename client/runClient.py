@@ -2,12 +2,12 @@ import cv2
 import numpy as np
 import time
 
-from nwhacks2018.client.ernn.emotion_recognition import EmotionRecognition
-from nwhacks2018.client.ernn.constants import *
-from nwhacks2018.client.ernn.poc import format_image
-from nwhacks2018.client.client_manager import ClientHelper
+from ernn.emotion_recognition import EmotionRecognition
+from ernn.constants import *
+from ernn.poc import format_image
+from client_manager import ClientHelper
 
-def run():
+def runtime():
 #Vars
     #load = DatasetLoader()
     #load.load_from_save()
@@ -53,4 +53,4 @@ def run():
                     config.increment_time()
     print("finished execution")
 
-#run()
+runtime()
