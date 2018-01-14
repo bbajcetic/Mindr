@@ -56,16 +56,14 @@ urlpatterns = [
     url(r'^api/auth/token/refresh/$', TokenRefreshView.as_view()),
 
     # Users
-    url(r'^api/users/', api_views.users),
-
-    # Cameras
-    path(r'api/parents/<int:parentid>/cameras/', api_views.cameras),
-    path(r'api/parents/<int:parentid>/cameras/<int:cameraid>', api_views.get_camera),
-
-    # Children
+    url(r'^api/users/register/', api_views.users),
     path(r'api/users/<int:userid>/', api_views.get_user),
+
+    # Camera
     path(r'api/users/<int:userid>/cameras/', api_views.cameras),
     path(r'api/users/<int:userid>/cameras/<int:cameraid>', api_views.get_camera),
+
+    # Children
     path(r'api/users/<int:userid>/children/', api_views.children),
     path(r'api/users/<int:userid>/children/<int:childid>', api_views.get_child),
     path(r'api/users/<int:userid>/children/<int:childid>/events', api_views.events),

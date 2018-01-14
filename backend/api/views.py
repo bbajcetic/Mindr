@@ -6,7 +6,6 @@ from django.views.decorators.http import require_http_methods
 from rest_framework.decorators import permission_classes
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import AllowAny
-from rest_framework.renderers import JSONRenderer
 from api.models import Camera, Child, Event
 from api.serializers import (
         UserSerializer,
@@ -115,18 +114,22 @@ def children(request, userid):
 
 
 @require_http_methods(["GET", "DELETE"])
-def get_child(request, parentid, childid):
+def get_child(request, userid, childid):
     """Sends back a child or deletes a child."""
     if request.method == "GET":
         # Send back the child
         response = serializers.serialize("json",
+<<<<<<< Updated upstream
                                     [Child.objects.filter(id=childid).first()])
         return HttpResponse(response, status=200)
+=======
+                                         [Child.objects.filter(id=childid).first()])
+        return JsonResponse(response, status=200)
+>>>>>>> Stashed changes
 
     # Delete the child
     Child.objects.filter(id=childid).delete()
     return JsonResponse(status=204)
-
 
 
 @require_http_methods(["GET", "POST"])
