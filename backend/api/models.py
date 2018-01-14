@@ -1,10 +1,21 @@
 from django.contrib.auth.models import User
 from django.db import models
+from api.views import KEY_LENGTH
 
 
 class Parent(models.Model):
     """A parent."""
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+class Camera(models.Model):
+    """A device which sends information to the server."""
+    # Each device has a key which is verified before it can post data to
+    # the server
+    name = models.CharField(max_length=30)
+    key = models.CharField(max_length=KEY_LENGTH)
+    parent = models.ForeignKey(Parent,
+                               on_delete=models.CASCADE,
+                               null=True)
 
 class Child(models.Model):
     """A child."""
