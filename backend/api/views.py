@@ -8,11 +8,10 @@ from rest_framework.decorators import permission_classes
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import AllowAny
 from datetime import timedelta
-from api.models import Camera, Child, Event
+from api.models import Camera, Event
 from api.serializers import (
         UserSerializer,
         CameraSerializer,
-        ChildSerializer,
         EventSerializer,
 )
 
@@ -111,53 +110,8 @@ def get_camera(request, userid, cameraid):
 
 @csrf_exempt
 @require_http_methods(["GET", "POST"])
-def children(request, userid):
-    """Registers a child or sends back all of a user's children."""
-    if request.method == "POST":
-        # Register a new child
-        data = JSONParser().parse(request)
-        serializer = ChildSerializer(data=data, context={'userid': userid})
-
-        if serializer.is_valid():
-            serializer.save()
-
-            # Return the child just registered
-            return JsonResponse(serializer.data, status=201)
-
-        # Invalid data
-        return JsonResponse(serializer.errors, status=400)
-
-    # Return all of a user's children
-    response = serializers.serialize("json",
-                                Child.objects.filter(user__id=userid))
-    return HttpResponse(response, status=200)
-
-
-@csrf_exempt
-@require_http_methods(["GET", "DELETE"])
-def get_child(request, userid, childid):
-    """Sends back a child or deletes a child."""
-    # Load the child
-    child = Child.objects.filter(id=childid)
-
-    if not child:
-        # Return empty set
-        return HttpResponse(EMPTY_JSON_SET, status=200)
-
-    if request.method == "GET":
-        # Send back the child
-        response = serializers.serialize("json", [child.first()])
-        return HttpResponse(response, status=200)
-
-    # Delete the child
-    Child.objects.filter(id=childid).first().delete()
-    return HttpResponse(EMPTY_JSON_SET, status=204)
-
-
-@csrf_exempt
-@require_http_methods(["GET", "POST"])
-def events(request, userid, childid):
-    """Registers an event or sends back all of a child's events."""
+def events(request, userid, cameraid):
+    """Registers an event or sends back all of a camera's events."""
     if request.method == "POST":
         # Get valid keys
         valid_keys = (
@@ -172,7 +126,7 @@ def events(request, userid, childid):
             return JsonResponse(status=401)
 
         # Register an event
-        serializer = EventSerializer(data=data, context={'childid': childid})
+        serializer = EventSerializer(data=data, context={'cameraid': cameraid})
 
         if serializer.is_valid():
             serializer.save()
@@ -183,15 +137,15 @@ def events(request, userid, childid):
         # Invalid data
         return JsonResponse(serializer.errors, status=400)
 
-    # Return all of a child's events
+    # Return all of a camera's events
     response = serializers.serialize("json",
-                                Event.objects.filter(child__id=childid))
+                                Event.objects.filter(camera__id=cameraid))
     return HttpResponse(response, status=200)
 
 
 @csrf_exempt
 @require_http_methods(["GET", "DELETE"])
-def get_event(request, userid, childid, eventid):
+def get_event(request, userid, cameraid, eventid):
     """Sends back an event or deletes an event."""
     # Load the event
     event = Event.objects.filter(id=eventid)
@@ -215,7 +169,7 @@ def get_significant_events(request, userid):
     user = User.objects.filter(id=userid).first()
     significant_events = (
         Event.objects.filter(
-                        child__user__id=userid).filter(
+                        camera__user__id=userid).filter(
                         significant=True).filter(
                         time__gt=F('time') + timedelta(hours=-24)).order_by(
                         '-time')
@@ -226,8 +180,8 @@ def get_significant_events(request, userid):
 
 
 @require_http_methods(["GET"])
-def get_emotion_average(request, userid, childid, numevents):
-    events = Event.objects.filter(child__id=childid).order_by('-id')[:numevents]
+def get_emotion_average(request, userid, cameraid, numevents):
+    events = Event.objects.filter(camera__id=cameraid).order_by('-id')[:numevents]
     averages = {"angry": 0,
                 "disgusted": 0,
                 "fearful": 0,

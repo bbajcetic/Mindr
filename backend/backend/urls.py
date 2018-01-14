@@ -61,18 +61,16 @@ urlpatterns = [
 
     # Event "special" views
     path(r'api/users/<int:userid>/hotevents', api_views.get_significant_events),
-    path(r'api/users/<int:userid>/children/<int:childid>/emotionaverage/<int:numevents>',
+    path(r'api/users/<int:userid>/cameras/<int:cameraid>/emotionaverage/<int:numevents>',
          api_views.get_emotion_average),
 
     # Camera
     path(r'api/users/<int:userid>/cameras/', api_views.cameras),
     path(r'api/users/<int:userid>/cameras/<int:cameraid>', api_views.get_camera),
 
-    # Children
-    path(r'api/users/<int:userid>/children/', api_views.children),
-    path(r'api/users/<int:userid>/children/<int:childid>', api_views.get_child),
-
     # Events
-    path(r'api/users/<int:userid>/children/<int:childid>/events', api_views.events),
-    path(r'api/users/<int:userid>/children/<int:childid>/events/<int:eventid>', api_views.get_event),
+    path(r'api/users/<int:userid>/cameras/<int:cameraid>/events', api_views.events),
+    path(r'api/users/<int:userid>/cameras/<int:cameraid>/events/<int:eventid>', api_views.get_event),
+
+    # Use this url to post from client
 ]

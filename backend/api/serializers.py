@@ -2,7 +2,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
 from rest_framework import serializers
-from api.models import Camera, Child, Event
+from api.models import Camera, Event
 from api.staticvars import KEY_LENGTH
 
 
@@ -33,28 +33,13 @@ class CameraSerializer(serializers.Serializer):
             user=user,)
 
 
-class ChildSerializer(serializers.Serializer):
-    first_name = serializers.CharField(required=True, max_length=30)
-    last_name = serializers.CharField(required=True, max_length=30)
-    sex = serializers.CharField(required=True, max_length=1)
-
-    def create(self, validated_data):
-        user = User.objects.filter(id=int(self.context['userid'])).first()
-
-        return Child.objects.create(
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name'],
-            sex=validated_data['sex'],
-            user=user,)
-
-
 class EventSerializer(serializers.Serializer):
     time = serializers.DateTimeField()
     significant = serializers.BooleanField()
     emotion = serializers.JSONField()
 
     def create(self, validated_data):
-        child = Child.objects.filter(id=int(self.context['childid'])).first()
+        camera = Camera.objects.filter(id=int(self.context['cameraid'])).first()
         emotiondict = validated_data['emotion']
         timeobject = validated_data['time']
 
@@ -63,4 +48,4 @@ class EventSerializer(serializers.Serializer):
             time=timeobject,
             significant=validated_data['significant'],
             emotion=validated_data['emotion'],
-            child=child,)
+            camera=camera,)
