@@ -1,6 +1,6 @@
 const initialState = {
   all: [],
-  currentUserChildren: [],
+  currentUserCameras: [],
 };
 
 export default function (state = initialState, action) {
@@ -10,20 +10,20 @@ export default function (state = initialState, action) {
     //     ...state,
     //     all: action.response.data,
     //   };
-    case 'FETCH_USER_CHILDREN_SUCCESS':
+    case 'FETCH_USER_CAMERAS_SUCCESS':
       return {
         ...state,
-        currentUserChildren: action.response.data,
+        currentUserCameras: action.response.data,
       };
-    case 'CREATE_CHILD_SUCCESS':
+    case 'CREATE_CAMERA_SUCCESS':
       return {
         ...state,
         all: [
           action.response.data,
           ...state.all,
         ],
-        currentUserChildren: [
-          ...state.currentUserChildren,
+        currentUserCameras: [
+          ...state.currentUserCameras,
           action.response.data,
         ],
       };

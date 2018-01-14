@@ -2,10 +2,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { css, StyleSheet } from 'aphrodite';
-import { fetchChildren, createChild } from '../../actions/children';
-import NewChildForm from '../../components/NewChildForm';
+import { fetchCameras, createCamera } from '../../actions/cameras';
+import NewCameraForm from '../../components/NewCameraForm';
 import Navbar from '../../components/Navbar';
-import ChildListItem from '../../components/ChildListItem';
+import CameraListItem from '../../components/CameraListItem';
 
 const styles = StyleSheet.create({
   card: {
@@ -15,16 +15,16 @@ const styles = StyleSheet.create({
   },
 });
 
-// type Child = {
-//   id: number,
-//   name: string,
-// }
+type Camera = {
+  id: number,
+  name: string,
+}
 
 type Props = {
-  children: Array<Children>,
-  currentChildren: Array<Children>,
-  fetchChildren: () => void,
-  createChild: () => void
+  cameras: Array<Camera>,
+  currentCameras: Array<Camera>,
+  fetchCameras: () => void,
+  createCamera: () => void
 }
 
 class Home extends Component {
@@ -33,22 +33,22 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchChildren(this.props.user);
+    this.props.fetchCameras(this.props.user);
   }
 
   props: Props
 
-  handleNewChildSubmit = data => this.props.createChild(data, this.context.router);
+  handleNewCameraSubmit = data => this.props.createCamera(data, this.context.router);
 
-  renderChildren() {
-    const currentChildrenIds = [];
-    this.props.currentChildren.map(child => currentChildrenIds.push(child.id));
+  renderCameras() {
+    const currentCameraIds = [];
+    this.props.currentCameras.map(camera => currentCameraIds.push(camera.id));
 
-    return this.props.children.map(child =>
-      <ChildListItem
-        key={child.id}
-        child={child}
-        currentChildrenIds={currentChildrenIds}
+    return this.props.cameras.map(camera =>
+      <CameraListItem
+        key={camera.id}
+        camera={camera}
+        currentCameraIds={currentCameraIds}
       />
     );
   }
@@ -58,12 +58,12 @@ class Home extends Component {
       <div style={{ flex: '1' }}>
         <Navbar />
         <div className={`card ${css(styles.card)}`}>
-          <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>Add a child</h3>
-          <NewChildForm onSubmit={this.handleNewChildSubmit} />
+          <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>Add a camera</h3>
+          <NewCameraForm onSubmit={this.handleNewCameraSubmit} />
         </div>
         <div className={`card ${css(styles.card)}`}>
-          <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>View someone's emotions</h3>
-          {/* {this.renderChildren()} */}
+          <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>Your favourite minds:</h3>
+          {/* {this.renderSomethins()} */}
         </div>
       </div>
     );
@@ -73,8 +73,8 @@ class Home extends Component {
 export default connect(
   state => ({
     user: state.session.currentUser,
-    children: state.children.all,
-    currentChildren: state.children.currentChildren,
+    cameras: state.cameras.all,
+    currentCameras: state.cameras.currentCameras,
   }),
-  { fetchChildren, createChild }
+  { fetchCameras, createCamera }
 )(Home);
