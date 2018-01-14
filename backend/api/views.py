@@ -191,6 +191,7 @@ def events_client_post(request):
         return JsonResponse(serializer.data, status=201)
 
     # Invalid data
+    print(serializer.errors)
     return JsonResponse(serializer.errors, status=400)
 
 
