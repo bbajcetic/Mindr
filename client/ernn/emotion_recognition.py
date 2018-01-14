@@ -42,6 +42,7 @@ class EmotionRecognition:
       tensorboard_verbose = 2
     )
     self.load_model()
+    print("Network Built!")
 
   def load_saved_dataset(self):
     self.dataset.load_from_save()
