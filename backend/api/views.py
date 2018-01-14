@@ -1,33 +1,5 @@
 from django.contrib.auth.models import User
 from django.core import serializers
-<<<<<<< HEAD
-from django.utils.crypto import get_random_string
-from rest_framework.decorators import permission_classes
-from django.views.decorators.http import require_http_methods
-from django.views.decorators.csrf import csrf_exempt
-from api.forms import (
-    CameraRegisterForm,
-    ChildRegisterForm,
-    ParentRegisterForm
-)
-from api.models import Camera, Child, Event, Parent
-from api.staticvars import KEY_LENGTH
-from rest_framework.permissions import AllowAny
-from django.http import HttpResponse, JsonResponse
-from rest_framework.response import Response
-from rest_framework.parsers import JSONParser
-from api.serializers import UserSerializer
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
-
-class CustomObtainAuthToken(ObtainAuthToken):
-    @csrf_exempt
-    @permission_classes((AllowAny, ))
-    def post(self, request, *args, **kwargs):
-        response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
-        token = Token.objects.get(key=response.data['token'])
-        return Response({'token': token.key, 'id': token.user_id})
-=======
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -41,7 +13,6 @@ from api.serializers import (
         CameraSerializer,
         ChildSerializer,
 )
->>>>>>> master
 
 
 @csrf_exempt
