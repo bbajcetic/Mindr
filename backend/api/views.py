@@ -12,6 +12,7 @@ from api.models import Camera, Event
 from api.serializers import (
         UserSerializer,
         CameraSerializer,
+        EventClientPostSerializer,
         EventSerializer,
 )
 
@@ -162,6 +163,34 @@ def get_event(request, userid, cameraid, eventid):
     # Delete the event
     Event.objects.filter(id=eventid).first().delete()
     return HttpResponse(EMPTY_JSON_SET, status=204)
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def events_client_post(request):
+    """Registers an event from client."""
+    # Parse request as JSON
+    data = JSONParser().parse(request)
+
+    # Load camera
+    camera_key = data["key"]
+    camera_queryset = Camera.objects.filter(cameraid=camera_key)
+
+    if not camera_queryset:
+        # Return empty set
+        return HttpResponse(EMPTY_JSON_SET, status=400)
+
+    # Parse data
+    serializer = EventClientPostSerializer(data=data, context={'cameraid': cameraid})
+
+    if serializer.is_valid():
+        serializer.save()
+
+        # Return the event just registered
+        return JsonResponse(serializer.data, status=201)
+
+    # Invalid data
+    return JsonResponse(serializer.errors, status=400)
 
 
 @require_http_methods(["GET"])

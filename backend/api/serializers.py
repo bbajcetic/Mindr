@@ -49,3 +49,21 @@ class EventSerializer(serializers.Serializer):
             significant=validated_data['significant'],
             emotion=validated_data['emotion'],
             camera=camera,)
+
+
+class EventClientPostSerializer(serializers.Serializer):
+    time = serializers.DateTimeField()
+    significant = serializers.BooleanField()
+    emotion = serializers.JSONField()
+
+    def create(self, validated_data):
+        camera = Camera.objects.filter(id=int(self.context['cameraid'])).first()
+        emotiondict = validated_data['emotion']
+        timeobject = validated_data['time']
+
+        # Create the event
+        return Event.objects.create(
+            time=timeobject,
+            significant=validated_data['significant'],
+            emotion=validated_data['emotion'],
+            camera=camera,)
