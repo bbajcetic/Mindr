@@ -22,10 +22,9 @@ class UserSerializer(serializers.Serializer):
 class CameraSerializer(serializers.Serializer):
     name = serializers.CharField(required=True, max_length=30)
     cameraid = serializers.CharField(required=True, max_length=30)
-    userid = serializers.CharField(required=True, max_length=30)
 
     def create(self, validated_data):
-        user = User.objects.filter(id=int(validated_data['userid']))
+        user = User.objects.filter(id=int(self.context['userid'])).first()
         key = get_random_string(length=KEY_LENGTH)
 
         return Camera.objects.create(
@@ -51,13 +50,12 @@ class ChildSerializer(serializers.Serializer):
 
 
 class EventSerializer(serializers.Serializer):
-    childid = serializers.CharField(required=True, max_length=30)
     time = serializers.DateTimeField()
     significant = serializers.BooleanField()
     emotiondata = serializers.DictField(child=serializers.FloatField())
 
     def create(self, validated_data):
-        child = Child.objects.filter(id=int(validated_data['childid']))
+        child = Child.objects.filter(id=int(self.context['childid'])).first()
         emotion = Emotion.objects.create(
                     anger=validated_data['emotiondata:anger'],
                     disgusted=validated_data['emotiondata:disgusted'],
