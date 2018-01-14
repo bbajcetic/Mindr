@@ -19,6 +19,7 @@ class ClientHelper:
         self.save_config()
 
     def update(self, results):
+        print("UPDATING!!!!!!!")
         payload = dict(zip(EMOTIONS, results))
         #PUSH TO SERVER
         url = ''
@@ -30,6 +31,7 @@ class ClientHelper:
         self.total_run_time += self.update_frequency
 
     def emergency_update(self, results, frame):
+        print("emergencyUpdate")
         payload = dict(zip(EMOTIONS, results))
         #PUSH TO SERVER
         url = ''
@@ -60,6 +62,7 @@ class ClientHelper:
     def load_config(self):
         try:
             data = open('data.yml', 'r')
+            #data = yaml.load(stream)
             self.update_frequency = data["update_frequency"]
             self.duration = data["run_time"]
             self.trigger_threshold = data["trigger_threshold"]
