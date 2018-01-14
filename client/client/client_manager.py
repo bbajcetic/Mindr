@@ -1,7 +1,7 @@
 import yaml
 import requests
 import json
-from nwhacks2018.client.ernn.constants import *
+from ernn.constants import *
 
 
 class ClientHelper:

@@ -1,14 +1,14 @@
 from __future__ import division, absolute_import
 import re
 import numpy as np
-from nwhacks2018.client.ernn.dataset_loader import DatasetLoader
+from ernn.dataset_loader import DatasetLoader
 import tflearn
 from tflearn.layers.core import input_data, dropout, fully_connected, flatten
 from tflearn.layers.conv import conv_2d, max_pool_2d, avg_pool_2d
 from tflearn.layers.merge_ops import merge
 from tflearn.layers.normalization import local_response_normalization
 from tflearn.layers.estimator import regression
-from nwhacks2018.client.ernn.constants import *
+from ernn.constants import *
 from os.path import isfile, join
 import random
 import sys

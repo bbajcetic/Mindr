@@ -1,6 +1,6 @@
 from os.path import join
 import numpy as np
-from nwhacks2018.client.ernn.constants import *
+from ernn.constants import *
 import cv2
 
 class DatasetLoader(object):
