@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import time
+
 from nwhacks2018.client.ernn.emotion_recognition import EmotionRecognition
 from nwhacks2018.client.ernn.constants import *
 from nwhacks2018.client.ernn.poc import format_image
@@ -33,20 +34,23 @@ def run():
         time.sleep(.9)
         ret, frame = video_capture.read()
         #analyze image for separate faces
+        temp_image = format_image(frame)
+        result = network.predict(temp_image)
 
-        result = network.predict(format_image(frame))
         print("checkin 1")
-    #if not result:
-    #    print("result faileds")
-        for feeling in result:
-            #print(feeling)
-            for emotion in feeling:
-                if emotion >= config.trigger_threshold:
-                    config.emergency_update(result, frame)
+        #if not result:
+           # print("result faileds")
+        if result is not None:
+            for feeling in result:
+        #print(feeling)
+                for emotion in feeling:
+                    if emotion >= config.trigger_threshold:
+                        config.emergency_update(result, frame)
+            print(feeling)
             if config.time_since_update == config.update_frequency:
-                config.update(result)
+                        config.update(result)
             else:
                 config.increment_time()
     print("finished execution")
 
-run()
+#run()
