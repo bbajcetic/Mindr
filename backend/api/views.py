@@ -60,7 +60,7 @@ def cameras(request, userid):
     if request.method == "POST":
         # Register a new camera
         data = JSONParser().parse(request)
-        serializer = CameraSerializer(data=data)
+        serializer = CameraSerializer(data=data, context={'userid': userid})
 
         if serializer.is_valid():
             serializer.save()
@@ -143,7 +143,7 @@ def events(request, userid, childid):
 
         # Register an event
         data = JSONParser().parse(request)
-        serializer = EventSerializer(data=data)
+        serializer = EventSerializer(data=data, context={'childid': childid})
 
         if serializer.is_valid():
             serializer.save()
