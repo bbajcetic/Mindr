@@ -16,15 +16,15 @@ def format_image(image):
   cascade_classifier = cv2.CascadeClassifier(CASC_PATH)
   #print("attempting to show image in format_image")
 
-  print("len of image shape is", len(image.shape))
+  #print("len of image shape is", len(image.shape))
   if len(image.shape) > 2 and image.shape[2] == 3: #IF Color convert to black or white
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    cv2.imshow('image2', image)
-    cv2.waitKey(0)
+    #cv2.imshow('image2', image)
+    #cv2.waitKey(0)
   else:
     #image = cv2.imdecode(image, 0)#CV_LOAD_IMAGE_GRAYSCALE)
     pass
-
+  #cv2.imshow('image', image)
 
   faces = cascade_classifier.detectMultiScale( #Return Faces MARK: THIS IS STEP 3A
       image,
@@ -32,7 +32,7 @@ def format_image(image):
       minNeighbors = 5
   )
   # None is we don't found an image
-  print("hello my friend")
+  #print("hello my friend")
   if len(faces) <= 0:
     print("returning my empty butthole")
     return None
