@@ -166,6 +166,7 @@ def get_event(request, userid, cameraid, eventid):
 
 
 @csrf_exempt
+@permission_classes((AllowAny, ))
 @require_http_methods(["POST"])
 def events_client_post(request):
     """Registers an event from client."""
