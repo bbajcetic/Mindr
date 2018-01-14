@@ -136,16 +136,19 @@ def get_child(request, userid, childid):
 def events(request, userid, childid):
     """Registers an event or sends back all of a child's events."""
     if request.method == "POST":
-        # Validate key
+        # Get valid keys
         valid_keys = (
             Camera.objects.filter(user__id=userid).values_list('key',
                                                                flat=True))
-        if request.POST['key'] not in valid_keys:
+        # Parse request as JSON
+        data = JSONParser().parse(request)
+
+        # Validate key
+        if data["key"] not in valid_keys:
             # Not allowed!
             return JsonResponse(status=401)
 
         # Register an event
-        data = JSONParser().parse(request)
         serializer = EventSerializer(data=data, context={'childid': childid})
 
         if serializer.is_valid():

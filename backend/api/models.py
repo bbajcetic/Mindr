@@ -17,9 +17,9 @@ class Camera(models.Model):
                             verbose_name="camera name")
     cameraid = models.CharField(max_length=100)
     key = models.CharField(max_length=KEY_LENGTH)
-    user= models.ForeignKey(User,
-                            on_delete=models.CASCADE,
-                            null=True)
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             null=True)
 
 
 class Child(models.Model):
@@ -52,19 +52,4 @@ class Event(models.Model):
                               null=True)
     time = models.DateTimeField(default=timezone.now)
     significant = models.BooleanField(default=False)
-
-
-class Emotion(models.Model):
-    """Emotion data for an event."""
-    event= models.ForeignKey(Event,
-                             on_delete=models.CASCADE,
-                             null=True)
-
-    # Emotion attributes
-    anger = models.FloatField()
-    disgusted = models.FloatField()
-    fearful = models.FloatField()
-    happy = models.FloatField()
-    sad = models.FloatField()
-    surprised = models.FloatField()
-    neutral = models.FloatField()
+    emotion = JSONField()
