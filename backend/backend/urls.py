@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+import api.views as api_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('<int:parentid>/camera/register/', api_views.register_camera),
 ]
