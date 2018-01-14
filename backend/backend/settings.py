@@ -25,7 +25,10 @@ SECRET_KEY = 'uhk%j^(m1(%j&+50kq%u3#8!mkumm2(ggse1w8q%)=xigpib2y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'nwhacks-dev.us-west-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['127.0.0.1',
+                 'localhost',
+                 '142.103.203.209',
+                 'nwhacks-dev.us-west-2.elasticbeanstalk.com',]
 
 
 # Application definition
