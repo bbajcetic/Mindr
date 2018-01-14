@@ -175,7 +175,7 @@ def events_client_post(request):
 
     # Load camera
     cameraid = data["key"]
-    camera_queryset = Camera.objects.filter(cameraid=camera_key)
+    camera_queryset = Camera.objects.filter(cameraid=cameraid)
 
     if not camera_queryset:
         # Return empty set
