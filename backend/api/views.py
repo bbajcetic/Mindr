@@ -120,13 +120,8 @@ def get_child(request, userid, childid):
     if request.method == "GET":
         # Send back the child
         response = serializers.serialize("json",
-<<<<<<< Updated upstream
                                     [Child.objects.filter(id=childid).first()])
         return HttpResponse(response, status=200)
-=======
-                                         [Child.objects.filter(id=childid).first()])
-        return JsonResponse(response, status=200)
->>>>>>> Stashed changes
 
     # Delete the child
     Child.objects.filter(id=childid).delete()
