@@ -39,7 +39,9 @@ def users(request):
         return JsonResponse(serializer.errors, status=400)
 
     # Return all users
-    response = serializers.serialize("json", User.objects.all())
+    response = serializers.serialize("json",
+                              User.objects.all(),
+                              fields=('username', 'email', 'password', 'id'))
     return HttpResponse(response, status=200)
 
 
@@ -56,7 +58,8 @@ def get_user(request, userid):
 
     if request.method == "GET":
         # Send back a user
-        response = serializers.serialize("json", [user.first()])
+        response = serializers.serialize("json", [user.first()],
+                            fields=('username', 'email', 'password', 'id'))
         return HttpResponse(response, status=200)
 
     # Delete the user
@@ -84,7 +87,8 @@ def cameras(request, userid):
 
     # Return all of a user's cameras
     response = serializers.serialize("json",
-                                Camera.objects.filter(user__id=userid))
+                                Camera.objects.filter(user__id=userid),
+                                fields=('name', 'cameraid', 'key', 'user', 'id'))
     return HttpResponse(response, status=200)
 
 
@@ -101,7 +105,8 @@ def get_camera(request, userid, cameraid):
 
     if request.method == "GET":
         # Send back the camera
-        response = serializers.serialize("json", [camera.first()])
+        response = serializers.serialize("json", [camera.first()],
+                                fields=('name', 'cameraid', 'key', 'user', 'id'))
         return HttpResponse(response, status=200)
 
     # Delete the camera
