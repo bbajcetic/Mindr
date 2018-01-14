@@ -24,7 +24,7 @@ class Camera(models.Model):
 
 class Event(models.Model):
     """Data from a screen capture."""
-    child = models.ForeignKey(Camera,
+    camera = models.ForeignKey(Camera,
                               on_delete=models.CASCADE,
                               null=True)
     time = models.DateTimeField(default=timezone.now)
