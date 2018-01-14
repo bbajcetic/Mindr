@@ -27,7 +27,7 @@ def parents(request):
         parent.save()
 
         # Return the parent just registered
-        response = serializers.serialize("json", parent)
+        response = serializers.serialize("json", [parent])
         return HttpResponse(response, content_type='application/json')
 
     # Return all parents
@@ -41,7 +41,7 @@ def get_parent(request, parentid):
     if request.method == "GET":
         # Send back a parent
         response = serializers.serialize("json",
-                                         Parent.objects.filter(id=parentid))
+                                         [Parent.objects.filter(id=parentid)])
         return HttpResponse(response, content_type='application/json')
 
     # Delete the parent
@@ -63,12 +63,12 @@ def cameras(request, parentid):
         camera.save()
 
         # Return the camera just registered
-        response = serializers.serialize("json", camera)
+        response = serializers.serialize("json", [camera])
         return HttpResponse(response, content_type='application/json')
 
     # Return all of a parent's cameras
     response = serializers.serialize("json",
-                                Camera.objects.filter(parent__id=parentid))
+                                [Camera.objects.filter(parent__id=parentid)])
     return HttpResponse(response, content_type='application/json')
 
 
@@ -78,7 +78,7 @@ def get_camera(request, parentid, cameraid):
     if request.method == "GET":
         # Send back the camera
         response = serializers.serialize("json",
-                                         Camera.objects.filter(id=cameraid))
+                                         [Camera.objects.filter(id=cameraid)])
         return HttpResponse(response, content_type='application/json')
 
     # Delete the camera
@@ -99,7 +99,7 @@ def children(request, parentid):
         child.save()
 
         # Return the child just registered
-        response = serializers.serialize("json", child)
+        response = serializers.serialize("json", [child])
         return HttpResponse(response, content_type='application/json')
 
     # Return all of a parent's children
@@ -114,7 +114,7 @@ def get_child(request, parentid, childid):
     if request.method == "GET":
         # Send back the child
         response = serializers.serialize("json",
-                                         Child.objects.filter(id=childid))
+                                         [Child.objects.filter(id=childid)])
         return HttpResponse(response, content_type='application/json')
 
     # Delete the child
@@ -149,7 +149,7 @@ def events(request, parentid, childid):
 
     # Return all of a child's events
     response = serializers.serialize("json",
-                                Event.objects.filter(child__id=childid))
+                                [Event.objects.filter(child__id=childid)])
     return HttpResponse(response, content_type='application/json')
 
 @require_http_methods(["GET", "DELETE"])
@@ -158,7 +158,7 @@ def get_event(request, parentid, childid, eventid):
     if request.method == "GET":
         # Send back the event
         response = serializers.serialize("json",
-                                         Event.objects.filter(id=eventid))
+                                         [Event.objects.filter(id=eventid)])
         return HttpResponse(response, content_type='application/json')
 
     # Delete the event
