@@ -174,15 +174,14 @@ def events_client_post(request):
     data = JSONParser().parse(request)
 
     # Load camera
-    camera_key = data["key"]
-    camera_queryset = Camera.objects.filter(key=camera_key)
+    cameraid = data["key"]
+    camera_queryset = Camera.objects.filter(cameraid=camera_key)
 
     if not camera_queryset:
         # Return empty set
         return HttpResponse(EMPTY_JSON_SET, status=400)
 
     # Parse data
-    cameraid = camera_queryset.first().cameraid
     serializer = EventClientPostSerializer(data=data, context={'cameraid': cameraid})
 
     if serializer.is_valid():
