@@ -91,13 +91,14 @@ def get_camera(request, userid, cameraid):
     return JsonResponse(status=204)
 
 
+@csrf_exempt
 @require_http_methods(["GET", "POST"])
 def children(request, userid):
     """Registers a child or sends back all of a user's children."""
     if request.method == "POST":
         # Register a new child
         data = JSONParser().parse(request)
-        serializer = ChildSerializer(data=data)
+        serializer = ChildSerializer(data=data, context={'userid': userid})
 
         if serializer.is_valid():
             serializer.save()

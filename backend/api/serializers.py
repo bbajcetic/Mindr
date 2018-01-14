@@ -39,10 +39,9 @@ class ChildSerializer(serializers.Serializer):
     first_name = serializers.CharField(required=True, max_length=30)
     last_name = serializers.CharField(required=True, max_length=30)
     sex = serializers.CharField(required=True, max_length=1)
-    userid = serializers.CharField(required=True, max_length=30)
 
     def create(self, validated_data):
-        user = User.objects.filter(id=int(validated_data['userid']))
+        user = User.objects.filter(id=int(self.context['userid'])).first()
 
         return Child.objects.create(
             first_name=validated_data['first_name'],
