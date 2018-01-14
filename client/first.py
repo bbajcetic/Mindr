@@ -34,7 +34,7 @@ def do_threshold(filename): #threshold info is sent here
 
 @post('/log4/<filename>')
 def do_go(filename): #go button
-    #start()
+    #runtime()
     return static_file(filename, root=dir_path1)
 
 @post('/log5/<filename>')
@@ -44,4 +44,4 @@ def stop(filename): #stop button
 
 
 
-run('localhost',8080)
+run(host='localhost',port=8080)
