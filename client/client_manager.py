@@ -1,7 +1,7 @@
 import yaml
 import requests
 import json
-from nwhacks2018.client.ernn.constants import *
+from ernn.constants import *
 
 
 class ClientHelper:
@@ -60,13 +60,13 @@ class ClientHelper:
             self.trigger_threshold = 0.4
 
     def load_config(self):
-        try:
+        if False:
             data = open('data.yml', 'r')
             #data = yaml.load(stream)
-            self.update_frequency = data["update_frequency"]
-            self.duration = data["run_time"]
-            self.trigger_threshold = data["trigger_threshold"]
-        except IOError:
+#            self.update_frequency = data['update_frequency']
+#            self.duration = data["run_time"]
+#            self.trigger_threshold = data["trigger_threshold"]
+        else:
             self.update_frequency = 15
             self.duration = 1
             self.trigger_threshold = 0.8

@@ -2,8 +2,8 @@
 # Proof-of-concept
 import cv2
 import sys
-from nwhacks2018.client.ernn.constants import *
-from nwhacks2018.client.ernn.emotion_recognition import EmotionRecognition
+from ernn.constants import *
+from ernn.emotion_recognition import EmotionRecognition
 import numpy as np
 
 cascade_classifier = cv2.CascadeClassifier(CASC_PATH)

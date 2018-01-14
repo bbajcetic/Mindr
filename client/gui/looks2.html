@@ -1,27 +1,39 @@
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="/home/branko/nwhacks2018/looks.css">
+		<link rel="stylesheet" type="text/css" href="looks.css">
 	</head>
 <body>
-	<br>Change in duration length confirmed.</br>
-	<div style="padding-top:100;padding-left:100" align="center">
+	<p>Change in duration length confirmed.</p>
+	<div class=page>	
 		<form action="/log1/looks1.html" method="post">
-    		<div align="left">
-			Set update:&nbsp&nbsp <input name="update" type="text" size="5"/>
-			<input value=">" type="submit" />
+    		<div>
+			Set update:&nbsp&nbsp 
+			<span>
+				<input name="update" type="text" size="5"/>
+				<input value=">" type="submit" />
+			</span>
     		</div>
 		</form>
 		<form action ="/log2/looks2.html" method="post">
-    		<div align="left">
-			Set duration: <input name="duration" type="text" size="5"/>
-			<input value=">" type="submit" />
-    		</div>
+    		<div>
+			Set duration: 
+			<span>
+				<input name="duration" type="text" size="5"/>
+				<input value=">" type="submit" />
+			</span>
+			</div>
 		</form>
 		<form action="/log3/looks3.html" method="post">
-    		<div align="left">
-			Set threshold: <input name="threshold" type="range" min="5" max="30" class="slider"/>
+    		<div>
+			Set threshold:
+			<span>
+			<input name="threshold" type="range" min="5" max="30" class="slider"/>
 			<input value=">" type="submit" /> 
-    		</div>
+			</span>
+			</div>
+		</form>
+		<form action="/log4/looks4.html" method="post">
+			<button class=button1 type="submit"><h3 class=go>Go!</h3></button>
 		</form>
 	</div>
 </body>
