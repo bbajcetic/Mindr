@@ -1,17 +1,9 @@
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from api.staticvars import KEY_LENGTH
-
-
-class Parent(models.Model):
-    """A parent."""
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        """String representation of a parent."""
-        return "%s" % self.user.username
 
 
 class Camera(models.Model):
@@ -22,10 +14,12 @@ class Camera(models.Model):
     """
     name = models.CharField(max_length=30,
                             verbose_name="camera name")
+    cameraid = models.CharField(max_length=100)
     key = models.CharField(max_length=KEY_LENGTH)
-    parent = models.ForeignKey(Parent,
-                               on_delete=models.CASCADE,
-                               null=True)
+    user= models.ForeignKey(User,
+                            on_delete=models.CASCADE,
+                            null=True)
+
 
 class Child(models.Model):
     """A child."""
@@ -40,14 +34,15 @@ class Child(models.Model):
                                     ('X', 'X'),),
                            default='F',)
 
-    # The parent "owning" the child
-    parent = models.ForeignKey(Parent,
-                               on_delete=models.CASCADE,
-                               null=True)
+    # The user "owning" the child
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             null=True)
 
     def __str__(self):
         """String representation of a child."""
         return "%s %s" % (self.first_name, self.last_name)
+
 
 class Event(models.Model):
     """Data from a screen capture."""
@@ -56,14 +51,5 @@ class Event(models.Model):
                               on_delete=models.CASCADE,
                               null=True)
 
-    # Emotion data - the below are used for testing right now, i.e.
-    # they're not final
-    is_significant = models.BooleanField()
-    happiness = models.IntegerField()
-
-@receiver(post_save, sender=User)
-def update_user_parent(sender, instance, created, **kwargs):
-    """Updates a user's 'parent'."""
-    if created:
-        Parent.objects.create(user=instance)
-    instance.parent.save()
+    # JSON emotion data
+    data = JSONField()

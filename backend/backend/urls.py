@@ -17,17 +17,17 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 from django.views import generic
+from rest_framework import views, serializers, status
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import AllowAny
 from rest_framework.schemas import get_schema_view
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from rest_framework import views, serializers, status
 from rest_framework.response import Response
 import api.views as api_views
 import api.serializers as UserSerializer
-from rest_framework.decorators import permission_classes
-from rest_framework.permissions import AllowAny
 
 
 class MessageSerializer(serializers.Serializer):
@@ -61,13 +61,12 @@ urlpatterns = [
     url(r'^api/auth/token/obtain/$', TokenObtainPairView.as_view()),
     url(r'^api/auth/token/refresh/$', TokenRefreshView.as_view()),
     url(r'^api/echo/$', EchoView.as_view()),
-    url(r'^api/users/register/', api_views.users),
-    path(r'api/parents/', api_views.parents),
-    path(r'api/parents/<int:parentid>/', api_views.get_parent),
-    path(r'api/parents/<int:parentid>/cameras/', api_views.cameras),
-    path(r'api/parents/<int:parentid>/cameras/<int:cameraid>', api_views.get_camera),
-    path(r'api/parents/<int:parentid>/children/', api_views.children),
-    path(r'api/parents/<int:parentid>/children/<int:childid>', api_views.get_child),
-    path(r'api/parents/<int:parentid>/children/<int:childid>/events', api_views.events),
-    path(r'api/parents/<int:parentid>/children/<int:childid>/events/<int:eventid>', api_views.get_event),
+    path(r'api/users/', api_views.users),
+    path(r'api/users/<int:userid>/', api_views.get_user),
+    path(r'api/users/<int:userid>/cameras/', api_views.cameras),
+    path(r'api/users/<int:userid>/cameras/<int:cameraid>', api_views.get_camera),
+    path(r'api/users/<int:userid>/children/', api_views.children),
+    path(r'api/users/<int:userid>/children/<int:childid>', api_views.get_child),
+    path(r'api/users/<int:userid>/children/<int:childid>/events', api_views.events),
+    path(r'api/users/<int:userid>/children/<int:childid>/events/<int:eventid>', api_views.get_event),
 ]
