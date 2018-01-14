@@ -58,11 +58,11 @@ class EmotionRecognition:
     self.model.fit(
       self.dataset.images, self.dataset.labels,
       validation_set = (self.dataset.images_test, self.dataset._labels_test),
-      n_epoch = 100,
-      batch_size = 50,
+      n_epoch = 10,
+      batch_size = 500,
       shuffle = True,
-      show_metric = True,
-      snapshot_step = 200,
+      show_metric = False,
+      snapshot_step = 10000,
       snapshot_epoch = True,
       run_id = 'emotion_recognition'
     )
