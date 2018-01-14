@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods
 from rest_framework.decorators import permission_classes
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import AllowAny
-import datetime
+from datetime import timedelta
 from api.models import Camera, Child, Event
 from api.serializers import (
         UserSerializer,
@@ -15,6 +15,8 @@ from api.serializers import (
         ChildSerializer,
         EventSerializer,
 )
+
+EMPTY_JSON_SET = serializers.serialize("json", set())
 
 
 @csrf_exempt
@@ -37,25 +39,32 @@ def users(request):
         return JsonResponse(serializer.errors, status=400)
 
     # Return all users
-    response = serializers.serialize("json", Parent.objects.all())
+    response = serializers.serialize("json", User.objects.all())
     return HttpResponse(response, status=200)
 
 
+@csrf_exempt
 @require_http_methods(["GET", "DELETE"])
 def get_user(request, userid):
     """Sends back a user or deletes a user."""
+    # Load the user
+    user = User.objects.filter(id=userid)
+
+    if not user:
+        # Return empty set
+        return HttpResponse(EMPTY_JSON_SET, status=200)
+
     if request.method == "GET":
         # Send back a user
-        response = serializers.serialize(
-                                    "json",
-                                    [User.objects.filter(id=userid).first()])
+        response = serializers.serialize("json", [user.first()])
         return HttpResponse(response, status=200)
 
     # Delete the user
-    User.objects.filter(id=userid).delete()
+    User.objects.filter(id=userid).first().delete()
     return JsonResponse(status=204)
 
 
+@csrf_exempt
 @require_http_methods(["GET", "POST"])
 def cameras(request, userid):
     """Registers a camera or sends back all of a user's cameras."""
@@ -75,22 +84,29 @@ def cameras(request, userid):
 
     # Return all of a user's cameras
     response = serializers.serialize("json",
-                                Camera.objects.filter(parent__id=parentid))
+                                Camera.objects.filter(user__id=userid))
     return HttpResponse(response, status=200)
 
 
+@csrf_exempt
 @require_http_methods(["GET", "DELETE"])
 def get_camera(request, userid, cameraid):
     """Sends back a camera or deletes a camera."""
+    # Load the camera
+    camera = Camera.objects.filter(id=cameraid)
+
+    if not camera:
+        # Return empty set
+        return HttpResponse(EMPTY_JSON_SET, status=200)
+
     if request.method == "GET":
         # Send back the camera
-        response = serializers.serialize("json",
-                                 [Camera.objects.filter(id=cameraid).first()])
+        response = serializers.serialize("json", [camera.first()])
         return HttpResponse(response, status=200)
 
     # Delete the camera
-    Camera.objects.filter(id=cameraid).delete()
-    return JsonResponse(status=204)
+    Camera.objects.filter(id=cameraid).first().delete()
+    return HttpResponse(EMPTY_JSON_SET, status=204)
 
 
 @csrf_exempt
@@ -117,18 +133,25 @@ def children(request, userid):
     return HttpResponse(response, status=200)
 
 
+@csrf_exempt
 @require_http_methods(["GET", "DELETE"])
 def get_child(request, userid, childid):
     """Sends back a child or deletes a child."""
+    # Load the child
+    child = Child.objects.filter(id=childid)
+
+    if not child:
+        # Return empty set
+        return HttpResponse(EMPTY_JSON_SET, status=200)
+
     if request.method == "GET":
         # Send back the child
-        response = serializers.serialize("json",
-                                    [Child.objects.filter(id=childid).first()])
+        response = serializers.serialize("json", [child.first()])
         return HttpResponse(response, status=200)
 
     # Delete the child
-    Child.objects.filter(id=childid).delete()
-    return JsonResponse(status=204)
+    Child.objects.filter(id=childid).first().delete()
+    return HttpResponse(EMPTY_JSON_SET, status=204)
 
 
 @csrf_exempt
@@ -166,29 +189,36 @@ def events(request, userid, childid):
     return HttpResponse(response, status=200)
 
 
+@csrf_exempt
 @require_http_methods(["GET", "DELETE"])
-def get_event(request, parentid, childid, eventid):
+def get_event(request, userid, childid, eventid):
     """Sends back an event or deletes an event."""
+    # Load the event
+    event = Event.objects.filter(id=eventid)
+
+    if not event:
+        # Return empty set
+        return HttpResponse(EMPTY_JSON_SET, status=200)
+
     if request.method == "GET":
         # Send back the event
-        response = serializers.serialize("json",
-                                   [Event.objects.filter(id=eventid).first()])
+        response = serializers.serialize("json", [event.first()])
         return HttpResponse(response, status=200)
 
     # Delete the event
-    Event.objects.filter(id=eventid).delete()
-    return JsonResponse(status=204)
+    Event.objects.filter(id=eventid).first().delete()
+    return HttpResponse(EMPTY_JSON_SET, status=204)
 
 
 @require_http_methods(["GET"])
 def get_significant_events(request, userid):
-    user = Users.objects.filter(id=userid).first()
+    user = User.objects.filter(id=userid).first()
     significant_events = (
         Event.objects.filter(
                         child__user__id=userid).filter(
                         significant=True).filter(
-                        time__gt=F('time') + timedelta(hours=-24).order_by(
-                        '-time'))
+                        time__gt=F('time') + timedelta(hours=-24)).order_by(
+                        '-time')
         )
 
     response = serializers.serialize("json", significant_events)

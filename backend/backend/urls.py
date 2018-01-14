@@ -57,8 +57,8 @@ urlpatterns = [
 
     # Users
     url(r'^api/users/register/', api_views.users),
-    path(r'api/users/<int:userid>/', api_views.get_user),
-    path(r'api/users/hotevents', api_views.get_significant_events),
+    path(r'api/users/<int:userid>', api_views.get_user),
+    path(r'api/users/<int:userid>/hotevents', api_views.get_significant_events),
 
     # Camera
     path(r'api/users/<int:userid>/cameras/', api_views.cameras),
