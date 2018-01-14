@@ -21,7 +21,7 @@ def parents(request):
     """Registers a parent or sends back all parents."""
     if request.method == "POST":
         # Register a new parent
-        form = ParentRegisterForm()
+        form = ParentRegisterForm(request.POST)
         parent = form.save()
         parent.refresh_from_db()
         parent.save()
@@ -54,7 +54,7 @@ def cameras(request, parentid):
     """Registers a camera or sends back all of a parent's cameras."""
     if request.method == "POST":
         # Register a new camera
-        form = CameraRegisterForm()
+        form = CameraRegisterForm(request.POST)
 
         camera = form.save()
         camera.refresh_from_db()
@@ -91,7 +91,7 @@ def children(request, parentid):
     """Registers a child or sends back all of a parent's children."""
     if request.method == "POST":
         # Register a new child
-        form = ChildRegisterForm()
+        form = ChildRegisterForm(request.POST)
 
         child = form.save()
         child.refresh_from_db()
