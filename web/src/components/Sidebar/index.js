@@ -58,31 +58,31 @@ const styles = StyleSheet.create({
   },
 });
 
-type Room = {
+type Child = {
   id: number,
   name: string,
 }
 
-type RoomLinkProps = {
-  room: Room
+type ChildLinkProps = {
+  child: Child
 }
 
-const RoomLink = ({ room }: RoomLinkProps) =>
-  <Link to={`/r/${room.id}`} className={css(styles.link)} activeClassName={css(styles.activeLink)}>
+const ChildLink = ({ child }: ChildLinkProps) =>
+  <Link to={`/r/${child.id}`} className={css(styles.link)} activeClassName={css(styles.activeLink)}>
     <div className={css(styles.badge)}>
-      <span>{room.name.charAt(0)}</span>
+      <span>{child.name.charAt(0)}</span>
     </div>
   </Link>;
 
 type Props = {
-  rooms: Array<Room>,
+  chilren: Array<Child>,
   router: Object,
   onLogoutClick: () => void,
 }
 
-const Sidebar = ({ rooms, router, onLogoutClick }: Props) =>
+const Sidebar = ({ children, router, onLogoutClick }: Props) =>
   <div className={css(styles.sidebar)}>
-    {rooms.map(room => <RoomLink key={room.id} room={room} />)}
+    {children.map(child => <ChildLink key={child.id} child={child} />)}
     <Link
       to="/"
       activeOnlyWhenExact

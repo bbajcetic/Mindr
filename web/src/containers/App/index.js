@@ -47,7 +47,7 @@ class App extends Component {
             {isAuthenticated &&
               <Sidebar
                 router={router}
-                rooms={currentUserChildren}
+                children={currentUserChildren}
                 onLogoutClick={this.handleLogout}
               />
             }

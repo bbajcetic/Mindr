@@ -47,7 +47,7 @@ class Home extends Component {
     return this.props.children.map(child =>
       <ChildListItem
         key={child.id}
-        room={child}
+        child={child}
         currentChildrenIds={currentChildrenIds}
       />
     );
@@ -72,7 +72,7 @@ class Home extends Component {
 
 export default connect(
   state => ({
-    user: state.session.user,
+    user: state.session.currentUser,
     children: state.children.all,
     currentChildren: state.children.currentChildren,
   }),
