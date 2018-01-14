@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from api.views import KEY_LENGTH
+from api.staticvars import KEY_LENGTH
 
 
 class Parent(models.Model):
