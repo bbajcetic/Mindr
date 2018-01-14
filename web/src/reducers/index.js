@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { reducer as form } from 'redux-form';
 import session from './session';
-import children from './children';
+import cameras from './cameras';
 
 const appReducer = combineReducers({
   form,
   session,
-  children,
+  cameras,
 });
 
 export default function (state, action) {

@@ -8,7 +8,7 @@ type Props = {
   submitting: boolean,
 }
 
-class NewChildForm extends Component {
+class NewCameraForm extends Component {
   props: Props
 
   handleSubmit = data => this.props.onSubmit(data);
@@ -23,6 +23,13 @@ class NewChildForm extends Component {
             name="name"
             type="text"
             placeholder="Name"
+            component="input"
+            className="form-control"
+          />
+          <Field
+            name="cameraid"
+            type="text"
+            placeholder="Camera ID"
             component="input"
             className="form-control"
           />
@@ -46,6 +53,6 @@ const validate = (values) => {
 };
 
 export default reduxForm({
-  form: 'NewChild',
+  form: 'NewCamera',
   validate,
-})(NewChildForm);
+})(NewCameraForm);
