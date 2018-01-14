@@ -73,4 +73,5 @@ urlpatterns = [
     path(r'api/users/<int:userid>/cameras/<int:cameraid>/events/<int:eventid>', api_views.get_event),
 
     # Use this url to post from client
+    path(r'api/postevent/', api_views.events_client_post),
 ]

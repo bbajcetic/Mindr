@@ -1,3 +1,4 @@
+import datetime
 import yaml
 import requests
 import json
@@ -20,10 +21,15 @@ class ClientHelper:
 
     def update(self, results):
         print("UPDATING!!!!!!!")
-        payload = dict(zip(EMOTIONS, results))
+        emotion = json.dumps(dict(zip(EMOTIONS, results)))
+        significant = False
+        time = datetime.datetime.today().__str__()
         #PUSH TO SERVER
-        url = ''
-        r = requests.post(url, data=json.dumps(self.client_id, payload))
+        url = r'http://nwhacks2018-mindr.s3-website-us-west-2.amazonaws.com/api/postevent/'
+        r = requests.post(url, data=json.dumps({'key': self.client_id,
+                                                'emotion': emotion,
+                                                'significant': significant,
+                                                'time': time}))
         if r.status_code == 200:
             print("something may have happened, and it may have been a positive or negative experience")
 
@@ -32,10 +38,16 @@ class ClientHelper:
 
     def emergency_update(self, results, frame):
         print("emergencyUpdate")
-        payload = dict(zip(EMOTIONS, results))
+        emotion = json.dumps(dict(zip(EMOTIONS, results)))
+        significant = True
+        time = datetime.datetime.today().__str__()
         #PUSH TO SERVER
-        url = ''
-        r = requests.post(url, data=json.dumps(self.client_id, payload, frame))
+        url = r'http://nwhacks2018-mindr.s3-website-us-west-2.amazonaws.com/api/postevent/'
+        r = requests.post(url, data=json.dumps({'key': self.client_id,
+                                                'emotion': emotion,
+                                                'significant': significant,
+                                                'time': time,
+                                                'frame': frame})
         if r.status_code == 200:
             print("something may have happened, and it may have been a positive or negative experience")
 
