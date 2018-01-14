@@ -12,7 +12,8 @@
 	height: 200px;
 	width: 500px;
 	background-color: #c0d0e0;
-	text-align: center
+	text-align: center;
+	border-style:solid;
 }
 .button1 {
 	height: 40px;
@@ -20,8 +21,19 @@
 	background-color: #adad85;
 }
 .go {
-	margin-bottom: 10px;
+	height: 40px;
+	width: 100px;
+	margin-bottom: 30px;
+	
 }
+.goword {
+	font-family: "Arial Black";
+	font-size: 20px;
+}
+.words {
+	font-family: "Arial Black";
+}
+
 </style>
 	</head>
 <body>
@@ -29,7 +41,7 @@
 	<div class=page>	
 		<form action="/log1/looks1.html" method="post">
     		<div>
-			Set update:&nbsp&nbsp 
+				<span class = words>	Set update:&nbsp&nbsp </span>
 			<span>
 				<input name="update" type="text" size="5"/>
 				<input value=">" type="submit" />
@@ -38,7 +50,7 @@
 		</form>
 		<form action ="/log2/looks2.html" method="post">
     		<div>
-			Set duration: 
+				<span class = words>	Set duration: </span>
 			<span>
 				<input name="duration" type="text" size="5"/>
 				<input value=">" type="submit" />
@@ -47,7 +59,7 @@
 		</form>
 		<form action="/log3/looks3.html" method="post">
     		<div>
-			Set threshold:
+				<span class = words>	Set threshold: </span>
 			<span>
 			<input name="threshold" type="range" min="5" max="30" class="slider"/>
 			<input value=">" type="submit" /> 
@@ -55,7 +67,8 @@
 			</div>
 		</form>
 		<form action="/log4/looks4.html" method="post">
-			<button class=button1 type="submit"><h3 class=go>Go!</h3></button>
+			<button class=go type="submit">
+			<span class=goword>Go!</span>
 		</form>
 	</div>
 </body>
