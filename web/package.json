@@ -1,28 +1,42 @@
 {
-  "name": "web",
+  "name": "mindr",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8000/",
+  "proxy": "http://127.0.0.1:8000/",
+  "devDependencies": {
+    "babel-eslint": "^7.0.0",
+    "eslint": "^3.8.1",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-flowtype": "^2.20.0",
+    "eslint-plugin-import": "^2.0.1",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.4.1",
+    "react-scripts": "0.6.1"
+  },
   "dependencies": {
-    "bootstrap": "^4.0.0-beta",
-    "history": "^4.7.2",
-    "jwt-decode": "^2.2.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-redux": "^5.0.6",
-    "react-router-redux": "^5.0.0-alpha.9",
-    "react-scripts": "1.0.17",
-    "react-transition-group": "^1.1.2",
-    "reactstrap": "^4.8.0",
-    "redux": "^3.7.2",
-    "redux-api-middleware": "^2.0.0-beta.3",
-    "redux-persist": "^5.0.0-beta.7",
-    "redux-persist-transform-filter": "0.0.16"
+    "aphrodite": "^0.6.0",
+    "dotenv": "^2.0.0",
+    "lodash": "^4.16.4",
+    "md5": "^2.2.1",
+    "moment": "^2.15.1",
+    "phoenix": "^1.2.1",
+    "prop-types": "^15.6.0",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-redux": "^4.4.5",
+    "react-router": "4.0.0-alpha.5",
+    "react-scripts": "0.7.0",
+    "redux": "^3.6.0",
+    "redux-form": "^6.1.1",
+    "redux-thunk": "^2.1.0",
+    "s3": "^4.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "upload": "node scripts/upload.js",
+    "deploy": "rm -rf build && npm run build && npm run upload"
   }
 }
