@@ -9,14 +9,19 @@ from api.forms import (
 )
 from api.models import Camera, Child, Event, Parent
 from api.staticvars import KEY_LENGTH
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import AllowAny
+from django.views.decorators.csrf import csrf_exempt
 
 
+@csrf_exempt
+@permission_classes((AllowAny, ))
 @require_http_methods(["GET", "POST"])
 def parents(request):
     """Registers a parent or sends back all parents."""
     if request.method == "POST":
         # Register a new parent
-        form = ParentRegisterForm
+        form = ParentRegisterForm()
         parent = form.save()
         parent.refresh_from_db()
         parent.save()
@@ -28,6 +33,7 @@ def parents(request):
     # Return all parents
     response = serializers.serialize("json", Parent.objects.all())
     return HttpResponse(response, content_type='application/json')
+
 
 @require_http_methods(["GET", "DELETE"])
 def get_parent(request, parentid):
@@ -41,6 +47,7 @@ def get_parent(request, parentid):
     # Delete the parent
     Parent.objects.filter(id=parentid).delete()
     return HttpResponse(status=204)
+
 
 @require_http_methods(["GET", "POST"])
 def cameras(request, parentid):
@@ -64,6 +71,7 @@ def cameras(request, parentid):
                                 Camera.objects.filter(parent__id=parentid))
     return HttpResponse(response, content_type='application/json')
 
+
 @require_http_methods(["GET", "DELETE"])
 def get_camera(request, parentid, cameraid):
     """Sends back a camera or deletes a camera."""
@@ -76,6 +84,7 @@ def get_camera(request, parentid, cameraid):
     # Delete the camera
     Parent.objects.filter(id=cameraid).delete()
     return HttpResponse(status=204)
+
 
 @require_http_methods(["GET", "POST"])
 def children(request, parentid):
@@ -97,6 +106,7 @@ def children(request, parentid):
     response = serializers.serialize("json",
                                 Child.objects.filter(parent__id=parentid))
     return HttpResponse(response, content_type='application/json')
+
 
 @require_http_methods(["GET", "DELETE"])
 def get_child(request, parentid, childid):
