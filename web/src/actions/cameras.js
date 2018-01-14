@@ -3,6 +3,7 @@ import api from '../api';
 export function fetchCameras(userId) {
   return dispatch => api.fetch(`/users/${userId}/cameras/`)
     .then((response) => {
+      console.log(response);
       dispatch({ type: 'FETCH_USER_CAMERAS_SUCCESS', response });
     });
 }

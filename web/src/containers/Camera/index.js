@@ -2,6 +2,6 @@
 import React from 'react';
 
 const Camera = props =>
-  <div>Camera {props.params.name}</div>;
+  <div>Camera {props.params.id}</div>;
 
 export default Camera;

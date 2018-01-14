@@ -38,7 +38,7 @@ class Home extends Component {
 
   props: Props
 
-  handleNewCameraSubmit = data => this.props.createCamera(data, this.context.router);
+  handleNewCameraSubmit = data => this.props.createCamera(data, this.props.user, this.context.router);
 
   renderCameras() {
     const currentCameraIds = [];

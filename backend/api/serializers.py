@@ -28,7 +28,7 @@ class CameraSerializer(serializers.Serializer):
 
         return Camera.objects.create(
             name=validated_data['name'],
-            cameraid=validated_date['cameraid'],
+            cameraid=validated_data['cameraid'],
             key=key,
             user=user,)
 

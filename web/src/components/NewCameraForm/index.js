@@ -22,6 +22,13 @@ class NewCameraForm extends Component {
           <Field
             name="name"
             type="text"
+            placeholder="Name"
+            component="input"
+            className="form-control"
+          />
+          <Field
+            name="cameraid"
+            type="text"
             placeholder="Camera ID"
             component="input"
             className="form-control"

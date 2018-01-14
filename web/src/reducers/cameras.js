@@ -13,7 +13,7 @@ export default function (state = initialState, action) {
     case 'FETCH_USER_CAMERAS_SUCCESS':
       return {
         ...state,
-        currentUserCameras: action.response.data,
+        currentUserCameras: action.response,
       };
     case 'CREATE_CAMERA_SUCCESS':
       return {

@@ -68,9 +68,9 @@ type CameraLinkProps = {
 }
 
 const CameraLink = ({ camera }: CameraLinkProps) =>
-  <Link to={`/r/${camera.id}`} className={css(styles.link)} activeClassName={css(styles.activeLink)}>
+  <Link to={`/r/${camera.pk}`} className={css(styles.link)} activeClassName={css(styles.activeLink)}>
     <div className={css(styles.badge)}>
-      <span>{camera.name.charAt(0)}</span>
+      <span>{camera.fields.name.charAt(0)}</span>
     </div>
   </Link>;
 
@@ -82,7 +82,7 @@ type Props = {
 
 const Sidebar = ({ cameras, router, onLogoutClick }: Props) =>
   <div className={css(styles.sidebar)}>
-    {cameras.map(camera => <CameraLink key={camera.id} camera={camera} />)}
+    {cameras.map(camera => <CameraLink key={camera.pk} camera={camera} />)}
     <Link
       to="/"
       activeOnlyWhenExact
