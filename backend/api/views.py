@@ -11,6 +11,7 @@ from api.serializers import (
         UserSerializer,
         CameraSerializer,
         ChildSerializer,
+        EventSerializer,
 )
 
 
@@ -145,13 +146,17 @@ def events(request, userid, childid):
             return JsonResponse(status=401)
 
         # Register an event
-        thechild = Child.objects.filter(id=childid)
-        event = Event(child=thechild,
-                      data=request.POST['data'])
+        data = JSONParser().parse(request)
+        serializer = EventSerializer(data=data)
 
-        # Return the event just registered
-        response = serializers.serialize("json", event)
-        return JsonResponse(response, status=201)
+        if serializer.is_valid():
+            serializer.save()
+
+            # Return the event just registered
+            return JsonResponse(serializer.data, status=201)
+
+        # Invalid data
+        return JsonResponse(serializer.errors, status=400)
 
     # Return all of a child's events
     response = serializers.serialize("json",

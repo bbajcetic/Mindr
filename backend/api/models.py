@@ -3,6 +3,7 @@ from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 from api.staticvars import KEY_LENGTH
 
 
@@ -46,10 +47,24 @@ class Child(models.Model):
 
 class Event(models.Model):
     """Data from a screen capture."""
-    # The child in the screen capture
     child = models.ForeignKey(Child,
                               on_delete=models.CASCADE,
                               null=True)
+    time = models.DateTimeField(default=timezone.now)
+    significant = models.BooleanField(default=False)
 
-    # JSON emotion data
-    data = JSONField()
+
+class Emotion(models.Model):
+    """Emotion data for an event."""
+    event= models.ForeignKey(Event,
+                             on_delete=models.CASCADE,
+                             null=True)
+
+    # Emotion attributes
+    anger = models.FloatField()
+    disgusted = models.FloatField()
+    fearful = models.FloatField()
+    happy = models.FloatField()
+    sad = models.FloatField()
+    surprised = models.FloatField()
+    neutral = models.FloatField()
