@@ -131,6 +131,7 @@ def get_child(request, userid, childid):
     return JsonResponse(status=204)
 
 
+@csrf_exempt
 @require_http_methods(["GET", "POST"])
 def events(request, userid, childid):
     """Registers an event or sends back all of a child's events."""
