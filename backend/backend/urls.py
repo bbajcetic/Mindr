@@ -51,4 +51,5 @@ urlpatterns = [
     url(r'^api/echo/$', EchoView.as_view()),
     path(r'register/', api_views.register_parent),
     path(r'<int:parentid>/camera/register/', api_views.register_camera),
+    path(r'<int:parentid>/child/register/', api_views.register_child),
 ]

@@ -1,7 +1,11 @@
 import json
 from django.views.decorators.http import require_POST
 from django.utils.crypto import get_random_string
-from api.forms import CameraRegisterForm, ParentRegisterForm
+from api.forms import (
+    CameraRegisterForm,
+    ChildRegisterForm,
+    ParentRegisterForm,
+)
 from api.staticvars import KEY_LENGTH
 
 
@@ -13,7 +17,6 @@ def register_parent(request):
     parent.refresh_from_db()
     parent.save()
     return json.load(parent)
-
 
 @require_POST
 def register_camera(request, parentid):
@@ -27,3 +30,15 @@ def register_camera(request, parentid):
     camera.save()
 
     return json.load(camera)
+
+@require_POST
+def register_child(request, parentid):
+    """Registers a child."""
+    form = ChildRegisterForm()
+
+    child = form.save()
+    child.refresh_from_db()
+    child.parent = request.user.parent
+    child.save()
+
+    return json.load(child)

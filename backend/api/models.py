@@ -8,10 +8,13 @@ class Parent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 class Camera(models.Model):
-    """A device which sends information to the server."""
-    # Each device has a key which is verified before it can post data to
-    # the server
-    name = models.CharField(max_length=30)
+    """A device which sends information to the server.
+
+    Each device has a key which is verified before it can post data to
+    the server
+    """
+    name = models.CharField(max_length=30,
+                            verbose_name="camera name")
     key = models.CharField(max_length=KEY_LENGTH)
     parent = models.ForeignKey(Parent,
                                on_delete=models.CASCADE,
@@ -20,8 +23,10 @@ class Camera(models.Model):
 class Child(models.Model):
     """A child."""
     # Basic child info
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=30,
+                                  verbose_name="first name")
+    last_name = models.CharField(max_length=30,
+                                  verbose_name="last name")
     sex = models.CharField(max_length=1,
                            choices=(('F', 'F'),
                                     ('M', 'M'),
