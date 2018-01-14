@@ -7,6 +7,11 @@ class Parent(models.Model):
     """A parent."""
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    def __str__(self)
+        """String representation of a parent."""
+        return "%s" % self.user.username
+
+
 class Camera(models.Model):
     """A device which sends information to the server.
 
