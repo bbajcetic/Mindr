@@ -34,3 +34,5 @@ def run():
             config.update()
         else:
             config.increment_time()
+
+run()

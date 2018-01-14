@@ -1,8 +1,9 @@
+
 # Proof-of-concept
 import cv2
 import sys
-from constants import *
-from emotion_recognition import EmotionRecognition
+from nwhacks2018.client.ernn.constants import *
+from nwhacks2018.client.ernn.emotion_recognition import EmotionRecognition
 import numpy as np
 
 cascade_classifier = cv2.CascadeClassifier(CASC_PATH)
@@ -41,7 +42,7 @@ def format_image(image):
   # cv2.waitKey(0)
   return image
 
-
+"""
 # Load Model
 network = EmotionRecognition()
 network.build_network()
@@ -86,3 +87,4 @@ while True:
 # When everything is done, release the capture
 video_capture.release()
 cv2.destroyAllWindows()
+"""

@@ -55,5 +55,6 @@ urlpatterns = [
     path(r'api/parents/<int:parentid>/cameras/<int:cameraid>', api_views.get_camera),
     path(r'api/parents/<int:parentid>/children/', api_views.children),
     path(r'api/parents/<int:parentid>/children/<int:childid>', api_views.get_child),
-#    path(r'<int:parentid>/child/<int:childid>/event/register', api_views.register_event),
+    path(r'api/parents/<int:parentid>/children/<int:childid>/events', api_views.events),
+    path(r'api/parents/<int:parentid>/children/<int:childid>/events/<int:eventid>', api_views.get_event),
 ]
