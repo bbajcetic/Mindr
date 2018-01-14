@@ -58,7 +58,11 @@ urlpatterns = [
     # Users
     url(r'^api/users/register/', api_views.users),
     path(r'api/users/<int:userid>', api_views.get_user),
+
+    # Event "special" views
     path(r'api/users/<int:userid>/hotevents', api_views.get_significant_events),
+    path(r'api/users/<int:userid>/children/<int:childid>/emotionaverage/<int:numevents>',
+         api_views.get_emotion_average),
 
     # Camera
     path(r'api/users/<int:userid>/cameras/', api_views.cameras),
@@ -67,7 +71,8 @@ urlpatterns = [
     # Children
     path(r'api/users/<int:userid>/children/', api_views.children),
     path(r'api/users/<int:userid>/children/<int:childid>', api_views.get_child),
+
+    # Events
     path(r'api/users/<int:userid>/children/<int:childid>/events', api_views.events),
     path(r'api/users/<int:userid>/children/<int:childid>/events/<int:eventid>', api_views.get_event),
-
 ]

@@ -223,3 +223,25 @@ def get_significant_events(request, userid):
 
     response = serializers.serialize("json", significant_events)
     return HttpResponse(response, status=200)
+
+
+@require_http_methods(["GET"])
+def get_emotion_average(request, userid, childid, numevents):
+    events = Event.objects.filter(child__id=childid).order_by('-id')[:numevents]
+    averages = {"angry": 0,
+                "disgusted": 0,
+                "fearful": 0,
+                "happy": 0,
+                "sad": 0,
+                "surprised": 0,
+                "neutral": 0}
+
+    # Compute averages
+    for event in events:
+        for key in averages.keys():
+            averages[key] += float(event.emotion[key])
+
+    for key in averages.keys():
+        averages[key] /= numevents
+
+    return JsonResponse(averages, status=200)
