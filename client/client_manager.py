@@ -1,4 +1,7 @@
 import yaml
+import requests
+import json
+from nwhacks2018.client.ernn.constants import *
 
 
 class ClientHelper:
@@ -15,14 +18,25 @@ class ClientHelper:
     def end_execution(self):
         self.save_config()
 
-    def update(self):
+    def update(self, results):
+        payload = dict(zip(EMOTIONS, results))
         #PUSH TO SERVER
+        url = ''
+        r = requests.post(url, data=json.dumps(self.client_id, payload))
+        if r.status_code == 200:
+            print("something may have happened, and it may have been a positive or negative experience")
+
         self.time_since_update = 0
         self.total_run_time += self.update_frequency
 
-    def emergency_update(self):
-        #PUSH TO EMERGENCY SERVER
-        pass
+    def emergency_update(self, results, frame):
+        payload = dict(zip(EMOTIONS, results))
+        #PUSH TO SERVER
+        url = ''
+        r = requests.post(url, data=json.dumps(self.client_id, payload, frame))
+        if r.status_code == 200:
+            print("something may have happened, and it may have been a positive or negative experience")
+
 
     def increment_time(self):
         if self.total_run_time / 60 >= self.duration:

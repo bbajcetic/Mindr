@@ -42,9 +42,9 @@ def run():
             #print(feeling)
             for emotion in feeling:
                 if emotion >= config.trigger_threshold:
-                    config.emergency_update()
+                    config.emergency_update(result, frame)
             if config.time_since_update == config.update_frequency:
-                config.update()
+                config.update(result)
             else:
                 config.increment_time()
     print("finished execution")
