@@ -43,10 +43,9 @@ export function signup(data, router) {
 }
 
 export function logout(router) {
-  return dispatch => api.delete('/sessions')
-    .then(() => {
+  return dispatch => {
       localStorage.removeItem('token');
       dispatch({ type: 'LOGOUT' });
       router.transitionTo('/login');
-    });
+    }
 }
