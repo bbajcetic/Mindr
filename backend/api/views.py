@@ -1,16 +1,19 @@
 import json
 from django.views.decorators.http import require_POST
 from django.utils.crypto import get_random_string
-from api.forms import CameraRegisterForm
+from api.forms import CameraRegisterForm, ParentRegisterForm
 from api.staticvars import KEY_LENGTH
 
 
-def verify_key(func):
-    """Decorator that verifies keys."""
-    def verified(request, *args, **kwags):
-        pass
+@require_POST
+def register_parent(request):
+    """Registers a parent."""
+    form = ParentRegisterForm
+    parent = form.save()
+    parent.refresh_from_db()
+    parent.save()
+    return json.load(parent)
 
-    return verified
 
 @require_POST
 def register_camera(request, parentid):
