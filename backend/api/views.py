@@ -1,9 +1,8 @@
 import json
-from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.utils.crypto import get_random_string
 from api.forms import CameraRegisterForm
-from api.models import Camera
+from api.staticvars import KEY_LENGTH
 
 
 def verify_key(func):
@@ -14,7 +13,7 @@ def verify_key(func):
     return verified
 
 @require_POST
-def register_camera(request):
+def register_camera(request, parentid):
     """Registers a camera."""
     form = CameraRegisterForm()
 
