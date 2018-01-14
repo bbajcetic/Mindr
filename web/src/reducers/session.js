@@ -1,7 +1,7 @@
 const initialState = {
   isAuthenticated: false,
   willAuthenticate: true,
-  currentUser: {},
+  currentUser: null,
 };
 
 export default function (state = initialState, action) {
@@ -16,19 +16,20 @@ export default function (state = initialState, action) {
         ...state,
         willAuthenticate: false,
         isAuthenticated: true,
-        currentUser: action.response.data,
+        currentUser: action.response.user,
       };
     case 'AUTHENTICATION_FAILURE':
       return {
         ...state,
         willAuthenticate: false,
+        currentUser: null,
       };
     case 'LOGOUT':
       return {
         ...state,
         willAuthenticate: false,
         isAuthenticated: false,
-        currentUser: {},
+        currentUser: null,
       };
     default:
       return state;

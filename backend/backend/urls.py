@@ -1,71 +1,67 @@
-"""backend URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 from django.views import generic
 from rest_framework.schemas import get_schema_view
 from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
+    TokenViewBase,
     TokenRefreshView,
 )
-from rest_framework import views, serializers, status
-from rest_framework.response import Response
+from rest_framework_simplejwt.serializers import (
+    TokenObtainSerializer,
+)
+
 import api.views as api_views
-import api.serializers as UserSerializer
-from rest_framework.decorators import permission_classes
-from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.utils.six import text_type
 
 
-class MessageSerializer(serializers.Serializer):
-    message = serializers.CharField()
+class CustomTokenObtainPairSerializer(TokenObtainSerializer):
+    @classmethod
+    def get_token(cls, user):
+        return RefreshToken.for_user(user)
+
+    def validate(self, attrs):
+        data = super(CustomTokenObtainPairSerializer, self).validate(attrs)
+
+        refresh = self.get_token(self.user)
+
+        data['user'] = text_type(self.user.id)
+        data['refresh'] = text_type(refresh)
+        data['access'] = text_type(refresh.access_token)
+
+        return data
 
 
-class EchoView(views.APIView):
-    def post(self, request, *args, **kwargs):
-        serializer = MessageSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        return Response(
-            serializer.data, status=status.HTTP_201_CREATED)
+class CustomTokenObtainPairView(TokenViewBase):
+    serializer_class = CustomTokenObtainPairSerializer
 
 
-class UserView(views.APIView):
-    @permission_classes((AllowAny, ))
-    def post(self, request, *args, **kwargs):
-        serializer = UserSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        return Response(
-            serializer.data, status=status.HTTP_201_CREATED)
+token_obtain_pair = CustomTokenObtainPairView.as_view()
 
 
 urlpatterns = [
+    # Admin
     path('admin/', admin.site.urls),
     url(r'^$', generic.RedirectView.as_view(
          url='/api/', permanent=False)),
     url(r'^api/$', get_schema_view()),
+
+    # Auth
     url(r'^api/auth/', include(
         'rest_framework.urls', namespace='rest_framework')),
-    url(r'^api/auth/token/obtain/$', TokenObtainPairView.as_view()),
+    url(r'^api/auth/token/obtain/$', CustomTokenObtainPairView.as_view()),
     url(r'^api/auth/token/refresh/$', TokenRefreshView.as_view()),
-    url(r'^api/echo/$', EchoView.as_view()),
+
+    # Users
     url(r'^api/users/register/', api_views.users),
-    path(r'api/parents/', api_views.parents),
-    path(r'api/parents/<int:parentid>/', api_views.get_parent),
+    url(r'^api/users/', api_views.users),
+
+    # Cameras
     path(r'api/parents/<int:parentid>/cameras/', api_views.cameras),
     path(r'api/parents/<int:parentid>/cameras/<int:cameraid>', api_views.get_camera),
+
+    # Children
     path(r'api/parents/<int:parentid>/children/', api_views.children),
     path(r'api/parents/<int:parentid>/children/<int:childid>', api_views.get_child),
     path(r'api/parents/<int:parentid>/children/<int:childid>/events', api_views.events),

@@ -1,11 +1,12 @@
 import { reset } from 'redux-form';
 import api from '../api';
-// import { fetchUserRooms } from './rooms';
+import { fetchChildren } from './children';
 
 function setCurrentUser(dispatch, response) {
   localStorage.setItem('token', JSON.stringify(response.access));
-  dispatch({ type: 'AUTHENTICATION_SUCCESS', response });
-  // dispatch(fetchUserRooms(response.data.id));
+  localStorage.setItem('user', JSON.stringify(response.user));
+  dispatch({ type: 'AUTHENTICATION_SUCCESS', response});
+  dispatch(fetchChildren(response.user));
 }
 
 export function authenticate() {
@@ -13,7 +14,7 @@ export function authenticate() {
     dispatch({ type: 'AUTHENTICATION_REQUEST' });
     return api.post('/auth/token/refresh/')
       .then((response) => {
-        // setCurrentUser(dispatch, response);
+        setCurrentUser(dispatch, response);
       })
       .catch(() => {
         localStorage.removeItem('token');
@@ -34,9 +35,9 @@ export function login(data, router) {
 }
 
 export function signup(data, router) {
-  return dispatch => api.post('/users', data)
+  return dispatch => api.post('/users/register/', data)
     .then((response) => {
-      // setCurrentUser(dispatch, response);
+      setCurrentUser(dispatch, response);
       dispatch(reset('signup'));
       router.transitionTo('/');
     });

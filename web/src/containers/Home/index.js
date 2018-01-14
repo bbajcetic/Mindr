@@ -2,10 +2,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { css, StyleSheet } from 'aphrodite';
-import { fetchRooms, createRoom, joinRoom } from '../../actions/rooms';
-import NewRoomForm from '../../components/NewRoomForm';
+import { fetchChildren, createChild } from '../../actions/children';
+import NewChildForm from '../../components/NewChildForm';
 import Navbar from '../../components/Navbar';
-import RoomListItem from '../../components/RoomListItem';
+import ChildListItem from '../../components/ChildListItem';
 
 const styles = StyleSheet.create({
   card: {
@@ -15,17 +15,16 @@ const styles = StyleSheet.create({
   },
 });
 
-type Room = {
-  id: number,
-  name: string,
-}
+// type Child = {
+//   id: number,
+//   name: string,
+// }
 
 type Props = {
-  rooms: Array<Room>,
-  currentUserRooms: Array<Room>,
-  fetchRooms: () => void,
-  createRoom: () => void,
-  joinRoom: () => void,
+  children: Array<Children>,
+  currentChildren: Array<Children>,
+  fetchChildren: () => void,
+  createChild: () => void
 }
 
 class Home extends Component {
@@ -34,25 +33,22 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchRooms();
+    this.props.fetchChildren(this.props.user);
   }
 
   props: Props
 
-  handleNewRoomSubmit = data => this.props.createRoom(data, this.context.router);
+  handleNewChildSubmit = data => this.props.createChild(data, this.context.router);
 
-  handleRoomJoin = roomId => this.props.joinRoom(roomId, this.context.router);
+  renderChildren() {
+    const currentChildrenIds = [];
+    this.props.currentChildren.map(child => currentChildrenIds.push(child.id));
 
-  renderRooms() {
-    const currentUserRoomIds = [];
-    this.props.currentUserRooms.map(room => currentUserRoomIds.push(room.id));
-
-    return this.props.rooms.map(room =>
-      <RoomListItem
-        key={room.id}
-        room={room}
-        onRoomJoin={this.handleRoomJoin}
-        currentUserRoomIds={currentUserRoomIds}
+    return this.props.children.map(child =>
+      <ChildListItem
+        key={child.id}
+        room={child}
+        currentChildrenIds={currentChildrenIds}
       />
     );
   }
@@ -62,12 +58,12 @@ class Home extends Component {
       <div style={{ flex: '1' }}>
         <Navbar />
         <div className={`card ${css(styles.card)}`}>
-          <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>Create a new room</h3>
-          <NewRoomForm onSubmit={this.handleNewRoomSubmit} />
+          <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>Add a child</h3>
+          <NewChildForm onSubmit={this.handleNewChildSubmit} />
         </div>
         <div className={`card ${css(styles.card)}`}>
-          <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>Join a room</h3>
-          {this.renderRooms()}
+          <h3 style={{ marginBottom: '2rem', textAlign: 'center' }}>View someone's emotions</h3>
+          {/* {this.renderChildren()} */}
         </div>
       </div>
     );
@@ -76,8 +72,9 @@ class Home extends Component {
 
 export default connect(
   state => ({
-    rooms: state.rooms.all,
-    currentUserRooms: state.rooms.currentUserRooms,
+    user: state.session.user,
+    children: state.children.all,
+    currentChildren: state.children.currentChildren,
   }),
-  { fetchRooms, createRoom, joinRoom }
+  { fetchChildren, createChild }
 )(Home);

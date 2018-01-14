@@ -1,6 +1,8 @@
 from django.core import serializers
 from django.utils.crypto import get_random_string
+from rest_framework.decorators import permission_classes
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 from api.forms import (
     CameraRegisterForm,
     ChildRegisterForm,
@@ -8,15 +10,21 @@ from api.forms import (
 )
 from api.models import Camera, Child, Event, Parent
 from api.staticvars import KEY_LENGTH
-from rest_framework.decorators import permission_classes
 from rest_framework.permissions import AllowAny
-from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.renderers import JSONRenderer
+from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
-from api.models import User
 from api.serializers import UserSerializer
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+
+class CustomObtainAuthToken(ObtainAuthToken):
+    @csrf_exempt
+    @permission_classes((AllowAny, ))
+    def post(self, request, *args, **kwargs):
+        response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
+        token = Token.objects.get(key=response.data['token'])
+        return Response({'token': token.key, 'id': token.user_id})
 
 
 @csrf_exempt
@@ -140,6 +148,7 @@ def get_child(request, parentid, childid):
     Child.objects.filter(id=childid).delete()
     return HttpResponse(status=204)
 
+
 @require_http_methods(["GET", "POST"])
 def events(request, parentid, childid):
     """Registers an event or sends back all of a child's events."""
@@ -170,6 +179,7 @@ def events(request, parentid, childid):
     response = serializers.serialize("json",
                                 Event.objects.filter(child__id=childid))
     return HttpResponse(response, content_type='application/json')
+
 
 @require_http_methods(["GET", "DELETE"])
 def get_event(request, parentid, childid, eventid):
