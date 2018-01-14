@@ -25,6 +25,9 @@ from rest_framework_simplejwt.views import (
 from rest_framework import views, serializers, status
 from rest_framework.response import Response
 import api.views as api_views
+import api.serializers as UserSerializer
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import AllowAny
 
 
 class MessageSerializer(serializers.Serializer):
@@ -34,6 +37,15 @@ class MessageSerializer(serializers.Serializer):
 class EchoView(views.APIView):
     def post(self, request, *args, **kwargs):
         serializer = MessageSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED)
+
+
+class UserView(views.APIView):
+    @permission_classes((AllowAny, ))
+    def post(self, request, *args, **kwargs):
+        serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response(
             serializer.data, status=status.HTTP_201_CREATED)
@@ -49,6 +61,7 @@ urlpatterns = [
     url(r'^api/auth/token/obtain/$', TokenObtainPairView.as_view()),
     url(r'^api/auth/token/refresh/$', TokenRefreshView.as_view()),
     url(r'^api/echo/$', EchoView.as_view()),
+    url(r'^api/users/register/', api_views.users),
     path(r'api/parents/', api_views.parents),
     path(r'api/parents/<int:parentid>/', api_views.get_parent),
     path(r'api/parents/<int:parentid>/cameras/', api_views.cameras),
