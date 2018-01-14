@@ -2,7 +2,7 @@
   "name": "mindr",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://127.0.0.1:8000/",
+  "proxy": "http://nwHacks-dev.us-west-2.elasticbeanstalk.com/",
   "devDependencies": {
     "babel-eslint": "^7.0.0",
     "eslint": "^3.8.1",
