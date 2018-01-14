@@ -10,7 +10,7 @@ import Signup from '../Signup';
 import MatchAuthenticated from '../../components/MatchAuthenticated';
 import RedirectAuthenticated from '../../components/RedirectAuthenticated';
 import Sidebar from '../../components/Sidebar';
-import Room from '../Room';
+import Child from '../Child';
 
 type Props = {
   authenticate: () => void,
@@ -18,7 +18,7 @@ type Props = {
   isAuthenticated: boolean,
   willAuthenticate: boolean,
   logout: () => void,
-  currentUserRooms: Array,
+  currentUserChildren: Array,
 }
 
 class App extends Component {
@@ -37,7 +37,7 @@ class App extends Component {
   handleLogout = router => this.props.logout(router);
 
   render() {
-    const { isAuthenticated, willAuthenticate, currentUserRooms } = this.props;
+    const { isAuthenticated, willAuthenticate, currentUserChildren } = this.props;
     const authProps = { isAuthenticated, willAuthenticate };
 
     return (
@@ -47,14 +47,14 @@ class App extends Component {
             {isAuthenticated &&
               <Sidebar
                 router={router}
-                rooms={currentUserRooms}
+                rooms={currentUserChildren}
                 onLogoutClick={this.handleLogout}
               />
             }
             <MatchAuthenticated exactly pattern="/" component={Home} {...authProps} />
             <RedirectAuthenticated pattern="/login" component={Login} {...authProps} />
             <RedirectAuthenticated pattern="/signup" component={Signup} {...authProps} />
-            <MatchAuthenticated pattern="/r/:id" component={Room} {...authProps} />
+            <MatchAuthenticated pattern="/c/:id" component={Child} {...authProps} />
             <Miss component={NotFound} />
           </div>
         )}
@@ -67,7 +67,7 @@ export default connect(
   state => ({
     isAuthenticated: state.session.isAuthenticated,
     willAuthenticate: state.session.willAuthenticate,
-    currentUserRooms: state.rooms.currentUserRooms,
+    currentUserChildren: state.children.currentUserChildren,
   }),
   { authenticate, unauthenticate, logout }
 )(App);
