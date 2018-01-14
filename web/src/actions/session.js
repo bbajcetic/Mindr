@@ -1,12 +1,12 @@
 import { reset } from 'redux-form';
 import api from '../api';
-import { fetchChildren } from './children';
+import { fetchCameras } from './cameras';
 
 function setCurrentUser(dispatch, response) {
   localStorage.setItem('token', JSON.stringify(response.access));
   localStorage.setItem('user', JSON.stringify(response.user));
   dispatch({ type: 'AUTHENTICATION_SUCCESS', response});
-  dispatch(fetchChildren(response.user));
+  dispatch(fetchCameras(response.user));
 }
 
 export function authenticate() {

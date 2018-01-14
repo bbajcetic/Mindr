@@ -58,31 +58,31 @@ const styles = StyleSheet.create({
   },
 });
 
-type Child = {
+type Camera = {
   id: number,
   name: string,
 }
 
-type ChildLinkProps = {
-  child: Child
+type CameraLinkProps = {
+  camera: Camera
 }
 
-const ChildLink = ({ child }: ChildLinkProps) =>
-  <Link to={`/r/${child.id}`} className={css(styles.link)} activeClassName={css(styles.activeLink)}>
+const CameraLink = ({ camera }: CameraLinkProps) =>
+  <Link to={`/r/${camera.id}`} className={css(styles.link)} activeClassName={css(styles.activeLink)}>
     <div className={css(styles.badge)}>
-      <span>{child.name.charAt(0)}</span>
+      <span>{camera.name.charAt(0)}</span>
     </div>
   </Link>;
 
 type Props = {
-  chilren: Array<Child>,
+  cameras: Array<Camera>,
   router: Object,
   onLogoutClick: () => void,
 }
 
-const Sidebar = ({ children, router, onLogoutClick }: Props) =>
+const Sidebar = ({ cameras, router, onLogoutClick }: Props) =>
   <div className={css(styles.sidebar)}>
-    {children.map(child => <ChildLink key={child.id} child={child} />)}
+    {cameras.map(camera => <CameraLink key={camera.id} camera={camera} />)}
     <Link
       to="/"
       activeOnlyWhenExact
