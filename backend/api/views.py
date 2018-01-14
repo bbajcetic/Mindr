@@ -177,6 +177,7 @@ def events_client_post(request):
     """Registers an event from client."""
     # Parse request as JSON
     data = JSONParser().parse(request)
+    print(data)
 
     # Load camera
     cameraid = data["key"]
@@ -184,7 +185,9 @@ def events_client_post(request):
 
     if not camera_queryset:
         # Return empty set
-        return HttpResponse(EMPTY_JSON_SET, status=400)
+        print("got here")
+
+        return HttpResponse(EMPTY_JSON_SET, status=406)
 
     # Parse data
     serializer = EventClientPostSerializer(data=data, context={'cameraid': cameraid})
