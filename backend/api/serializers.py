@@ -21,6 +21,7 @@ class UserSerializer(serializers.Serializer):
 class CameraSerializer(serializers.Serializer):
     name = serializers.CharField(required=True, max_length=30)
     cameraid = serializers.CharField(required=True, max_length=30)
+    id = serializers.CharField(required=False)
 
     def create(self, validated_data):
         user = User.objects.filter(id=int(self.context['userid'])).first()
