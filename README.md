@@ -2,7 +2,7 @@
 
 mindr is a cross-platform emotion monitoring app, essential for every
 smart home. The app is tailored to provide an unintrusive and private
-solution to keep track of a child's well-being during all those times we
+solution to keep track of a child's well-being during all those times you
 can't be with them.
 
 ## How it works
