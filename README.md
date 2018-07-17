@@ -7,7 +7,7 @@ can't be with them.
 
 ## How it works
 
-The emotion monitoring happens locally on a laptop or any IoT device
+The emotion monitoring happens locally on a laptop or any Internet of Things(IoT) device
 that supports a camera. Each frame from the camera is processed
 for emotional content and severe emotional distress. The emotion
 processing is facilitated using OpenCV, TensorFlow, and was trained
