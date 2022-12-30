@@ -11,7 +11,7 @@
     "eslint-plugin-import": "^2.0.1",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.4.1",
-    "react-scripts": "0.6.1"
+    "react-scripts": "5.0.1"
   },
   "dependencies": {
     "aphrodite": "^0.6.0",
@@ -26,7 +26,7 @@
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",
     "react-router": "4.0.0-alpha.5",
-    "react-scripts": "0.7.0",
+    "react-scripts": "5.0.1",
     "redux": "^3.6.0",
     "redux-form": "^6.1.1",
     "redux-thunk": "^2.1.0",
